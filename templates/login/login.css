@@ -1,0 +1,99 @@
+/* Root variables for color scheme */
+:root {
+  --primary-color: #007bff; /* Primary color */
+  --secondary-color: #0056b3; /* Secondary color */
+  --background-color: #f4f4f4; /* Background color */
+  --border-color: #ccc; /* Border color */
+  --box-shadow-color: rgba(0, 0, 0, 0.1); /* Box shadow color */
+}
+
+/* Global styles for body */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--background-color); /* Using variable for background color */
+}
+
+/* Login container styling */
+.login-container {
+  width: 400px;
+  padding: 20px;
+  border: 2px solid var(--border-color); /* Using variable for border color */
+  border-radius: 5px;
+  background-color: #fff; /* Using a fallback color */
+  box-shadow: 0 0 10px var(--box-shadow-color); /* Using variable for box shadow color */
+  text-align: center;
+}
+
+/* Header styles */
+.header {
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  color: #333; /* Header text color */
+}
+
+/* Form styles */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Label styles */
+label {
+  margin-bottom: 5px;
+  color: #333; /* Label text color */
+}
+
+/* Input styles */
+input[type="text"],
+input[type="password"] {
+  padding: 10px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  border: 1px solid var(--border-color); /* Using variable for input border color */
+  border-radius: 3px;
+}
+
+/* Hide submit button */
+button[type="submit"] {
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  background-color: var(--primary-color); /* Using variable for button background color */
+  color: #fff; /* Button text color */
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+button[type="submit"]:hover {
+  background-color: var(--secondary-color); /* Using variable for button hover background color */
+}
+
+/* Logo styles */
+.logo img {
+  display: block;
+  margin: 20px auto;
+  height: 100px;
+}
+
+/* Additional styling for sign-up section */
+.text-center {
+  margin-top: 20px;
+}
+
+.txt1 {
+  font-size: 14px;
+}
+.txt2 {
+  color: var(--primary-color); /* Using variable for link color */
+  text-decoration: none;
+  font-weight: bold;
+}
