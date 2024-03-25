@@ -1,51 +1,51 @@
-﻿ID,Name,Genre 1,Genre 2,Genre 3,Artist 1,Artist 2,Artist 3
-1,Sibyl Bode,rock,r&b,pop,Dae Dae,Ro James,Deicide
-2,Eleazar Hettinger,rap,classical,hip hop,Eliza Gilkyson,Trick Daddy,Bruce Springsteen
-3,Geovanny Lang,rap,country,soul,K.A.R.D,SF9,Fischerspooner
-4,Micah Satterfield,jazz,r&b,classical,Fun Lovin' Criminals,Q-Tip,Soul Asylum
-5,Courtney Schowalter,classical,folk,metal,Lorrie Morgan,Tcm,Wintersun
-6,Donato Daniel,metal,r&b,pop,Guns N' Roses,Dream Theater,Jill Scott
-7,Caroline Jaskolski,r&b,k-pop,electronic,Chris Young,Alan Jackson,Arturo Benedetti Michelangeli
-8,Vincenza Collins,pop,folk,electronic,Mila J,W.A.S.P.,The Allman Brothers Band
-9,Judd Becker,k-pop,folk,r&b,The Jackson 5,Sweet,TAEMIN
-10,Nathanial Walsh,classical,metal,rap,The-Dream,Tricky,Alessia Cara
-11,Korbin Kirlin,rap,country,k-pop,Havok,Katy Perry,Norazo
-12,Kaleigh McGlynn,hip hop,jazz,r&b,XIA,Cassie,Bruce Springsteen
-13,Marielle Wolf,metal,pop,classical,Jennifer Warnes,Ben E. King,G.R.L.
-14,Marcos Raynor,rock,electronic,soul,Josquin des Prez,Grand Puba,DOWN
-15,Eddie Ebert ,folk,soul,rap,Luther Ingram,Kat Dahlia,Suzy Bogguss
-16,Jaiden Jast,r&b,rock,rap,3 Inches Of Blood,Future,Jay Park
-17,Abigale Kub,folk,classical,soul,The Temptations,The Wilkinsons,NU'EST
-18,Ana Williamson,k-pop,folk,hip hop,Joe Simon,The Shirelles,Willow
-19,Lora Berge,r&b,country,rock,Steve Earle,Riccardo Muti,Deicide
-20,Mafalda MacGyver,soul,rap,rock,Johannes Ockeghem,Lil Dicky,Diddy
-21,Nolan Kihn,hip hop,rap,country,Billy Joel,Ramones,NU'EST
-22,Camila Stoltenberg,folk,jazz,classical,Soul For Real,Aly & AJ,Johnny Paycheck
-23,Josie Wisoky,electronic,soul,folk,Bread,The Bellamy Brothers,Ottorino Respighi
-24,Zita Rolfson,r&b,soul,folk,Hilary Duff,Ralph Vaughan Williams,Simian Mobile Disco
-25,Sebastian Borer,metal,soul,rock,Austin Mahone,Art Garfunkel,Average White Band
-26,Aron Wilderman,metal,k-pop,electronic,Blaze Bayley,Unleashed,Tiffany Evans
-27,Thelma Mitchell,soul,folk,rap,Municipal Waste,Suzanne Vega,After School
-28,Kristina Hickle,rap,electronic,r&b,Emmylou Harris,Blackalicious,The Guess Who
-29,Leola Gutkowski,pop,k-pop,jazz,The Grid,APRIL,S.E.S.
-30,Nasir Pfeffer,hip hop,folk,jazz,The The,Pretty Ricky,Giovanni Pierluigi da Palestrina
-31,Vicenta Bernier,metal,rock,folk,G.NA,Deicide,Wilson Pickett
-32,Pablo Pfannerstill,k-pop,folk,metal,Lu Han,Clark,SEVENTEEN
-33,Nigel Howe,rap,country,classical,DJ Mustard,Cavalera Conspiracy,will.i.am
-34,Kelly Halvorson,electronic,classical,hip hop,Tyrese,Indigo Girls,Tricky
-35,Caitlyn Schultz,rock,k-pop,classical,L.T.D.,Justin Bieber,Ab-Soul
-36,Linwood Mills,rap,folk,pop,Vince Staples,Saint Etienne,Chinx
-37,Trevor Wintheiser,country,k-pop,electronic,Nevermore,Atlanta Rhythm Section,Primal Scream
-38,Blaze Kunde,jazz,pop,metal,Witold LutosÅ‚awski,Large Professor,London Philharmonic Orchestra
-39,Reynold Ruecker,electronic,metal,soul,OutKast,Billy Paul,Snakehips
-40,Katharina Lynch,electronic,hip hop,classical,Styles P,The Undisputed Truth,Madeintyo
-41,Morris Prosacco,country,classical,soul,The Rapture,Fleetwood Mac,Electrik Red
-42,Raphael Schumm,rap,electronic,rock,Chris Brown,Ruth Brown,Roy Woods
-43,Mattie Paucek,pop,hip hop,soul,Heaven & Hell,The-Dream,The Bellamy Brothers
-44,Valentine Daugherty,rock,soul,electronic,D.R.I.,Jerry Lee Lewis,Paula DeAnda
-45,Oda Ferry,rap,jazz,hip hop,LaVern Baker,Gucci Mane,Far East Movement
-46,Fabian Weimann,hip hop,rap,jazz,Natasha Bedingfield,Betty Everett,The Band
-47,Yasmeen Welch,pop,r&b,metal,Jim Jones,David Banner,Anvil
-48,Rylan Schroeder,rock,classical,rap,Machine Gun Kelly,The Roots,Dan Penn
-49,Antonio Lebsack,r&b,electronic,k-pop,Urban Zakapa,Sam Cooke,Billy Gilman
-50,Ramon Robel,jazz,classical,rock,Ariana Grande,SEOHYUN,J. Holiday
+﻿ID,Password,Name,Genre 1,Genre 2,Genre 3
+1,1,Sibyl Bode,rock,r&b,pop
+2,2,Eleazar Hettinger,rap,classical,hip hop
+3,3,Geovanny Lang,rap,country,soul
+4,4,Micah Satterfield,jazz,r&b,classical
+5,5,Courtney Schowalter,classical,folk,metal
+6,6,Donato Daniel,metal,r&b,pop
+7,7,Caroline Jaskolski,r&b,k-pop,electronic
+8,8,Vincenza Collins,pop,folk,electronic
+9,9,Judd Becker,k-pop,folk,r&b
+10,10,Nathanial Walsh,classical,metal,rap
+11,11,Korbin Kirlin,rap,country,k-pop
+12,12,Kaleigh McGlynn,hip hop,jazz,r&b
+13,13,Marielle Wolf,metal,pop,classical
+14,14,Marcos Raynor,rock,electronic,soul
+15,15,Eddie Ebert ,folk,soul,rap
+16,16,Jaiden Jast,r&b,rock,rap
+17,17,Abigale Kub,folk,classical,soul
+18,18,Ana Williamson,k-pop,folk,hip hop
+19,19,Lora Berge,r&b,country,rock
+20,20,Mafalda MacGyver,soul,rap,rock
+21,21,Nolan Kihn,hip hop,rap,country
+22,22,Camila Stoltenberg,folk,jazz,classical
+23,23,Josie Wisoky,electronic,soul,folk
+24,24,Zita Rolfson,r&b,soul,folk
+25,25,Sebastian Borer,metal,soul,rock
+26,26,Aron Wilderman,metal,k-pop,electronic
+27,27,Thelma Mitchell,soul,folk,rap
+28,28,Kristina Hickle,rap,electronic,r&b
+29,29,Leola Gutkowski,pop,k-pop,jazz
+30,30,Nasir Pfeffer,hip hop,folk,jazz
+31,31,Vicenta Bernier,metal,rock,folk
+32,32,Pablo Pfannerstill,k-pop,folk,metal
+33,33,Nigel Howe,rap,country,classical
+34,34,Kelly Halvorson,electronic,classical,hip hop
+35,35,Caitlyn Schultz,rock,k-pop,classical
+36,36,Linwood Mills,rap,folk,pop
+37,37,Trevor Wintheiser,country,k-pop,electronic
+38,38,Blaze Kunde,jazz,pop,metal
+39,39,Reynold Ruecker,electronic,metal,soul
+40,40,Katharina Lynch,electronic,hip hop,classical
+41,41,Morris Prosacco,country,classical,soul
+42,42,Raphael Schumm,rap,electronic,rock
+43,43,Mattie Paucek,pop,hip hop,soul
+44,44,Valentine Daugherty,rock,soul,electronic
+45,45,Oda Ferry,rap,jazz,hip hop
+46,46,Fabian Weimann,hip hop,rap,jazz
+47,47,Yasmeen Welch,pop,r&b,metal
+48,48,Rylan Schroeder,rock,classical,rap
+49,49,Antonio Lebsack,r&b,electronic,k-pop
+50,50,Ramon Robel,jazz,classical,rock
