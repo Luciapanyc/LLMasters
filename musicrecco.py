@@ -21,11 +21,10 @@ def login():
         authenticated, role = authenticate(username,password)
 
         if authenticated:
-            user = get_user_from_username(username) # create user
+            user = get_user_from_username(username)
             login_user(user)
         else:
             return "Invalid UserID or Password", 401
-
         
         return redirect(url_for('security.security')), 302
     except HTTPException as http_error:
@@ -40,4 +39,4 @@ def login():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port="9001", debug=True)
+    app.run(host='0.0.0.0', port="5000", debug=True)
