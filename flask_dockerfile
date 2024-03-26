@@ -1,0 +1,14 @@
+# base image
+FROM python:3.10.6-slim-buster
+
+WORKDIR /app
+COPY musicrecco.py /app
+COPY requirements.txt /app
+COPY templates/ /app/templates
+COPY data/ /app/data
+
+# things to make customers.py work
+RUN pip3 install --upgrade pip
+RUN pip3 install -r requirements.txt
+
+ENTRYPOINT python -u -m musicrecco
