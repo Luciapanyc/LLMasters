@@ -2,7 +2,7 @@
 :root {
   --primary-color: #007bff; /* Primary color */
   --secondary-color: #0056b3; /* Secondary color */
-  --background-color: #f4f4f4; /* Background color */
+  --background-color: white; /* Background color */
   --border-color: #ccc; /* Border color */
   --box-shadow-color: rgba(0, 0, 0, 0.1); /* Box shadow color */
 }
