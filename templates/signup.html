@@ -3,25 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="signup.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/signup.css">
 
     <title>Sign Up Page</title>
-    <link rel="icon" type="image/png" href="musicrecco.png"/>
+    <link rel="icon" type="image/png" href="../static/musicrecco.png"/>
 </head>
 <body>
     <div class="login_container">
         <div class="header">
             <h1>Sign up for Musicrecco</h1>
         </div>
-        <form action="/signup" method="post">
+        <form action="/signup" method="post" id="signupForm">
+            <label for="UserID">User ID:</label>
+            <input type="text" id="UserID" name="UserID" required>
+
+            <label for="Password">Password:</label>
+            <input type="text" id="Password" name="Password" required>
+            
             <label for="Name">Name:</label>
             <input type="text" id="Name" name="Name" required>
 
             <label for="Favourite_Genres">Top 3 Favorite Genres:</label>
             <div class="genre-bubbles">
-                <input type="checkbox" id="classical" name="Favourite_Genres[]" value="classical">
-                <label for="classical">Classical</label>
-                
                 <input type="checkbox" id="country" name="Favourite_Genres[]" value="country">
                 <label for="country">Country</label>
                 
@@ -59,8 +62,32 @@
                 <label for="soul">Soul</label>
             </div>
             
-            <button type="submit">Submit</button>
+            <button type="submit">Sign Up</button>
         </form>
     </div>
 </body>
+
+<script>
+    // JavaScript to restrict the number of selectable genres to 3
+    const checkboxes = document.querySelectorAll('input[name="Favourite_Genres[]"]');
+    const maxGenres = 3;
+
+    checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', function() {
+            let checkedCount = document.querySelectorAll('input[name="Favourite_Genres[]"]:checked').length;
+            if (checkedCount > maxGenres) {
+                this.checked = false;
+            }
+        });
+    });
+
+    document.getElementById('signupForm').addEventListener('submit', function(event) {
+        let checkedCount = document.querySelectorAll('input[name="Favourite_Genres[]"]:checked').length;
+        if (checkedCount !== maxGenres) {
+            alert(`Please select exactly ${maxGenres} genres.`);
+            event.preventDefault();
+        }
+    });
+</script>
+
 </html>
