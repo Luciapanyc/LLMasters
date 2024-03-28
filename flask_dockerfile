@@ -2,13 +2,16 @@
 FROM python:3.10.6-slim-buster
 
 WORKDIR /app
-COPY musicrecco.py /app
-COPY requirements.txt /app
-COPY templates/ /app/templates
-COPY data/ /app/data
 
-# things to make customers.py work
-RUN pip3 install --upgrade pip
-RUN pip3 install -r requirements.txt
+# Copy application files
+COPY musicrecco.py requirements.txt ./
+COPY templates/ templates/
+COPY data/ data/
+COPY static/ static/
 
-ENTRYPOINT python -u -m musicrecco
+# Install dependencies
+RUN pip3 install --upgrade pip && \
+    pip3 install -r requirements.txt
+
+# Set entrypoint command
+ENTRYPOINT ["python", "-u", "-m", "musicrecco"]

@@ -1,4 +1,4 @@
-version: "1.0"
+version: "3.8"
 
 services:
   web:
@@ -7,6 +7,3 @@ services:
       dockerfile: flask_dockerfile
     ports:
       - "9001:5000"
-    depends_on:
-      - db
-    
