@@ -11,7 +11,7 @@
 </head>
 <body>
   <div class="chatbox-wrapper">
-    <div class="message-box">
+    <div id="messageBox" class="message-box">
       <div class="chat response">
         <img src="../static/profile.jpg">
         <span>Hello there! <br> 
@@ -21,8 +21,8 @@
     </div>
     <div class="messagebar">
       <div class="bar-wrapper">
-        <input type="text" placeholder="Enter your message...">
-        <button>
+        <input type="text" id="userMessage" placeholder="Enter your message...">
+        <button id="sendMessageBtn">
           <span class="material-icons">send</span>
         </button>
       </div>
@@ -30,5 +30,5 @@
   </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="../model/chatbot script.js"></script>
+<script src="../static/chatbot script.js"></script>
 </html>
