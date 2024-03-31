@@ -12,7 +12,7 @@ history = pd.read_csv('../data/listening history.csv')
 # 2. h2o Model
 client = H2OGPTE(
     address='https://h2ogpte.genai.h2o.ai',
-    api_key='sk-e4vXVj35STQ15msFSdaeZPDo0xvCElTK4Q0hw9F1LUjgTJov',
+    api_key='sk-985GNVY6C2hOrmixYxL9uJ9DtpLZFrNb42NmPAf5TN4WXXgu',
 )
 
 ## Create Collection
