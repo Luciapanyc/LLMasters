@@ -79,3 +79,7 @@ body{
   height: calc(100vh - 5rem);
   overflow-y: auto;
 }
+
+.response-text {
+  white-space: pre-line; /* or pre-wrap */
+}

@@ -31,7 +31,7 @@ $(document).ready(function () {
                 var botResponseHtml =
                     `<div class="chat response">
                         <img src="../static/profile.jpg">
-                        <span>${response.response}</span>
+                        <span class="response-text">${response.response}</span>
                     </div>`;
                 $('#messageBox').append(botResponseHtml);
             },

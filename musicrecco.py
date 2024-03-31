@@ -16,7 +16,7 @@ client = H2OGPTE(
 # Create Personal collection
 collection_id = client.create_collection(
 name='Musicrecco',
-description='Music Reccommender',
+description='Music Recommender',
 )
 chat_session_id = client.create_chat_session(collection_id)
 
@@ -170,7 +170,7 @@ def chatbot():
             with client.connect(chat_session_id) as session:
                 answer = session.query(
                     message=user_message,
-                    system_prompt='Assume music and song to be the same word. When a question asks for similar music, recommend fewer than 5 songs unless told otherwise. Find similar music based on genre and other factors such as danceability, loudness, speechiness, and more. Just return the song name unless stated otherwise.',
+                    system_prompt='Assume music and song to be the same word. When a question asks for similar music, recommend fewer than 5 songs unless told otherwise. Find similar music based on genre and other factors such as danceability, loudness, speechiness, and more. Just return the song name unless stated otherwise. Do not give too many details',
                     rag_config={"rag_type": "rag"},
                 ).content
                 
