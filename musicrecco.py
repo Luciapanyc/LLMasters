@@ -13,12 +13,15 @@ client = H2OGPTE(
     api_key='sk-e4vXVj35STQ15msFSdaeZPDo0xvCElTK4Q0hw9F1LUjgTJov',
 )
 
-collection_id = client.create_collection(
-    name="MusicRecco",
-    description="Music Reccommender",
-)
+collection_id = None
+chat_session_id = None
 
-chat_session_id = client.create_chat_session(collection_id)
+# Ingest Data
+songs = pd.read_csv('/app/data/songs_short.csv')
+songs_txt = songs.to_csv(index=False)
+songs_data = client.upload('songs_short.txt', songs_txt.encode())
+client.ingest_uploads(collection_id, [songs_data])
+
 
 # Load user credentials from Excel file
 def load_user_credentials():
@@ -78,9 +81,16 @@ def login():
         authenticated = authenticate(username, password)
 
         if authenticated:
-            # Retrived Data
-            songs = pd.read_csv('/app/data/songs_short.csv')
+            # Create Personal collection
+            collection_id = client.create_collection(
+                name=username,
+                description="Music Reccommender",
+            )
 
+            #Initiate Chat
+            chat_session_id = client.create_chat_session(collection_id)
+
+            # Retrived Data
             user = pd.read_csv('/app/data/user.csv')
             user = user[user['UserID'] == username]
 
@@ -88,17 +98,15 @@ def login():
             history = history[history['UserID'] == username]
 
             # Converted to Text
-            songs_txt = songs.to_csv(index=False)
             user_txt = user.to_csv(index=False)
             history_txt = history.to_csv(index=False)
 
             # Upload
-            songs_data = client.upload('songs_short.txt', songs_txt.encode())
             user_data = client.upload('user.txt', user_txt.encode())
             history_data = client.upload('listening_history.txt', history_txt.encode())
 
             # Ingest the uploaded data
-            client.ingest_uploads(collection_id, [songs_data, user_data, history_data])
+            client.ingest_uploads(collection_id, [user_data, history_data])
 
             return redirect(url_for('chatbot')), 302
         else:
@@ -153,7 +161,7 @@ def signup():
 # Chatbot Page
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
-    if request.method == 'POST':
+    if request.method == 'GET':
         try:
             return render_template('chatbot.html'), 200
         except Exception as e:

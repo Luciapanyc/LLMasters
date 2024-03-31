@@ -1,6 +1,7 @@
 # base image
 FROM python:3.10.6-slim-buster
 
+# Set environment variables
 WORKDIR /app
 
 # Copy application files
@@ -13,5 +14,8 @@ COPY static/ static/
 RUN pip3 install --upgrade pip && \
     pip3 install -r requirements.txt
 
-# Set entrypoint command
-ENTRYPOINT ["python", "-u", "-m", "musicrecco"]
+# Expose the Flask port
+EXPOSE 9001
+
+# Run the Flask application
+CMD ["python", "-u", "musicrecco.py"]
