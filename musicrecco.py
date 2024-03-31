@@ -10,11 +10,15 @@ app = Flask(__name__)
 #h2o Model
 client = H2OGPTE(
     address='https://h2ogpte.genai.h2o.ai',
-    api_key='sk-e4vXVj35STQ15msFSdaeZPDo0xvCElTK4Q0hw9F1LUjgTJov',
+    api_key='sk-985GNVY6C2hOrmixYxL9uJ9DtpLZFrNb42NmPAf5TN4WXXgu',
 )
 
-collection_id = None
-chat_session_id = None
+# Create Personal collection
+collection_id = client.create_collection(
+name='Musicrecco',
+description='Music Reccommender',
+)
+chat_session_id = client.create_chat_session(collection_id)
 
 # Ingest Data
 songs = pd.read_csv('/app/data/songs_short.csv')
@@ -81,15 +85,6 @@ def login():
         authenticated = authenticate(username, password)
 
         if authenticated:
-            # Create Personal collection
-            collection_id = client.create_collection(
-                name=username,
-                description="Music Reccommender",
-            )
-
-            #Initiate Chat
-            chat_session_id = client.create_chat_session(collection_id)
-
             # Retrived Data
             user = pd.read_csv('/app/data/user.csv')
             user = user[user['UserID'] == username]
