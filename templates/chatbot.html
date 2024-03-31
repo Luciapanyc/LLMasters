@@ -3,21 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../templates/chatbot.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/chatbot.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <title>Chatbot Page</title>
     <link rel="icon" type="image/png" href="../static/musicrecco.png"/>
 </head>
 <body>
-    <div class="chat-container"></div>
-
-    <div class="typing-container">
-        <div class="typing-content">
-          <div class="typing-textarea">
-            <textarea id="chat-input" spellcheck="false" placeholder="Enter a prompt here" required></textarea>
-            <span id="send-btn" class="material-symbols-rounded">Send  </span>
-          </div>
-        </div>
+  <div class="chatbox-wrapper">
+    <div class="message-box">
+      <div class="chat response">
+        <img src="../static/profile.jpg">
+        <span>Hello there! <br> 
+          How can I help you today.
+        </span>
+      </div>
     </div>
+    <div class="messagebar">
+      <div class="bar-wrapper">
+        <input type="text" placeholder="Enter your message...">
+        <button>
+          <span class="material-icons">send</span>
+        </button>
+      </div>
+    </div>
+  </div>
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../model/chatbot script.js"></script>
 </html>

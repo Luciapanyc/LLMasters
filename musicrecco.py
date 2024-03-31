@@ -1,8 +1,24 @@
 from flask import Flask, request, render_template, redirect, url_for, jsonify
+from h2ogpte import H2OGPTE
+import numpy as np
 import pandas as pd
 import os
 
+
 app = Flask(__name__)
+
+#h2o Model
+client = H2OGPTE(
+    address='https://h2ogpte.genai.h2o.ai',
+    api_key='sk-e4vXVj35STQ15msFSdaeZPDo0xvCElTK4Q0hw9F1LUjgTJov',
+)
+
+collection_id = client.create_collection(
+    name="MusicRecco",
+    description="Music Reccommender",
+)
+
+chat_session_id = client.create_chat_session(collection_id)
 
 # Load user credentials from Excel file
 def load_user_credentials():
@@ -62,21 +78,33 @@ def login():
         authenticated = authenticate(username, password)
 
         if authenticated:
+            # Retrived Data
+            songs = pd.read_csv('/app/data/songs_short.csv')
+
+            user = pd.read_csv('/app/data/user.csv')
+            user = user[user['UserID'] == username]
+
+            history = pd.read_csv('/app/data/listening history.csv')
+            history = history[history['UserID'] == username]
+
+            # Converted to Text
+            songs_txt = songs.to_csv(index=False)
+            user_txt = user.to_csv(index=False)
+            history_txt = history.to_csv(index=False)
+
+            # Upload
+            songs_data = client.upload('songs_short.txt', songs_txt.encode())
+            user_data = client.upload('user.txt', user_txt.encode())
+            history_data = client.upload('listening_history.txt', history_txt.encode())
+
+            # Ingest the uploaded data
+            client.ingest_uploads(collection_id, [songs_data, user_data, history_data])
+
             return redirect(url_for('chatbot')), 302
         else:
             return "Invalid UserID or Password", 401
     except Exception as e:
         return jsonify({'error': f"Internal Server Error: {e}"}), 500
-
-# Chatbot Page
-@app.route('/chatbot', methods=['GET'])
-def chatbot():
-    try:
-        return render_template('chatbot.html'), 200
-    except Exception as e:
-        error_message = f"Error rendering chatbot template: {e}"
-        return jsonify({'error': error_message}), 500
-
 
 # Signup Page
 @app.route('/signup', methods=['GET', 'POST'])
@@ -121,6 +149,34 @@ def signup():
         except Exception as e:
             error_message = f"Error rendering signup template: {e}"
             return jsonify({'error': error_message}), 500
+
+# Chatbot Page
+@app.route('/chatbot', methods=['GET', 'POST'])
+def chatbot():
+    if request.method == 'POST':
+        try:
+            return render_template('chatbot.html'), 200
+        except Exception as e:
+            error_message = f"Error rendering chatbot template: {e}"
+            return jsonify({'error': error_message}), 500
+    
+    else:
+        try:
+            user_message = request.form['message']
+            
+            with client.connect(chat_session_id) as session:
+                answer = session.query(
+                    message=user_message,
+                    system_prompt='Assume music and song to be the same word. When a question asks for similar music, recommend fewer than 5 songs unless told otherwise. Find similar music based on genre and other factors such as danceability, loudness, speechiness, and more. Just return the song name unless stated otherwise.',
+                    rag_config={"rag_type": "rag"},
+                ).content
+                
+                bot_response = answer
+
+        except Exception as e:
+            bot_response = f"Error: {str(e)}"
+
+        return jsonify({'response': bot_response})
 
 
 if __name__ == "__main__":
