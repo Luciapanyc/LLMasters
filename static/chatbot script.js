@@ -1,4 +1,5 @@
-$(document).ready(function () {
+$(document).ready(function () {  
+    $('#userMessage').focus();
     $('#sendMessageBtn').click(function () {
         sendMessage();
     });
@@ -15,12 +16,15 @@ $(document).ready(function () {
   
         var userMessageHtml =
             `<div class="chat message">
-                <img src="../static/profile-2.jpg">
+                <img src="../static/user.png">
                 <span>${userMessage}</span>
             </div>`;
   
         $('#messageBox').append(userMessageHtml);
         $('#userMessage').val('');
+
+        // Scroll to bottom after appending the user's message
+        scrollToBottom();
   
         // Send message to Flask server
         $.ajax({
@@ -30,15 +34,22 @@ $(document).ready(function () {
             success: function (response) {
                 var botResponseHtml =
                     `<div class="chat response">
-                        <img src="../static/profile.jpg">
+                        <img src="../static/musicrecco_chatbotprofile.png">
                         <span class="response-text">${response.response}</span>
                     </div>`;
                 $('#messageBox').append(botResponseHtml);
+                // Scroll to bottom after appending messages
+                scrollToBottom();
             },
             error: function () {
                 console.error('Error sending message');
             }
         });
+    }
+    // Function to scroll the message box to the bottom
+    function scrollToBottom() {
+        var messageBox = document.getElementById('messageBox');
+        messageBox.scrollTop = messageBox.scrollHeight;
     }
 });
 

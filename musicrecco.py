@@ -10,7 +10,7 @@ app = Flask(__name__)
 #h2o Model
 client = H2OGPTE(
     address='https://h2ogpte.genai.h2o.ai',
-    api_key='sk-985GNVY6C2hOrmixYxL9uJ9DtpLZFrNb42NmPAf5TN4WXXgu',
+    api_key='sk-yRj8Ziu35BiTDv2i8NbYDJ2Jrvo8G7gIlhqxl3pM2lUniJPr',
 )
 
 # Create Personal collection

@@ -8,25 +8,28 @@
 body{
   width: 100%;
   height: 100vh;
-  background-color: #33343f;
+  background-color: #fde6b6;
 }
 
 .chat{
   display: flex;
   gap: 20px;
   padding: 25px;
-  color: #fff;
+  color: #000000;
   font-size: 15px;
   font-weight: 300;
+  align-items: center; /* Center-align items vertically */
+  margin-bottom: 10px; /* Add some space between chat bubbles */
 }
 
 .chat img{
-  width: 35px;
-  height: 35px;
+  width: 65px;
+  height: 65px;
 }
 
 .response{
-  background-color: #494b59;
+  background-color: #ffc954d2;
+  align-items: center; /* Center-align items vertically */
 }
 
 .messagebar{
@@ -37,12 +40,11 @@ body{
   display: flex;
   align-items: center;
   justify-content: center;
-  border-top: 1px solid #494b59;
-  background-color: #33343f;
+  background-color: #f4b686;
 }
 
 .messagebar .bar-wrapper{
-  background-color: #494b59;
+  background-color: #cdcdcd;
   border-radius: 5px;
   width: 60vw;
   padding: 10px;
@@ -58,11 +60,11 @@ body{
   outline: none;
   font-size: 14px;
   background: none;
-  color: #ccc;
+  color: #000000;
 }
 
 .bar-wrapper input::placeholder{
-  color: #ccc;
+  color: #000000;
 }
 
 .messagebar button{
@@ -71,7 +73,7 @@ body{
   justify-content: center;
   background: none;
   border: none;
-  color: #fff;
+  color: #000000;
   cursor: pointer;
 }
 
@@ -83,3 +85,4 @@ body{
 .response-text {
   white-space: pre-line; /* or pre-wrap */
 }
+
