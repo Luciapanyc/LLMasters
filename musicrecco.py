@@ -3,6 +3,8 @@ from h2ogpte import H2OGPTE
 import numpy as np
 import pandas as pd
 import os
+from datetime import datetime
+import re
 
 
 app = Flask(__name__)
@@ -25,6 +27,7 @@ songs = pd.read_csv('/app/data/songs_short.csv')
 songs_txt = songs.to_csv(index=False)
 songs_data = client.upload('songs_short.txt', songs_txt.encode())
 client.ingest_uploads(collection_id, [songs_data])
+user_id = " "
 
 
 # Load user credentials from Excel file
@@ -63,6 +66,31 @@ def authenticate(username, password):
     except Exception as e:
         print("Error during authentication:", e)  # Debug statement
         return False
+    
+def recommended_history(response, user_id, timestamp):
+    pattern = r'\"([^\"]*)\" by ([A-Za-z\s&./]+)'
+    matches = re.findall(pattern, response)
+    data = []
+
+    for match in matches:
+        song_name = match[0]
+        artist_name = match[1]
+        if 'And' in artist_name:
+            artist_name = artist_name.split('And')[0].strip()
+        data.append([user_id, song_name, artist_name, timestamp])
+
+    df = pd.DataFrame(data, columns=['UserID', 'song_name', 'artist_name', 'timestamp'])
+    print(df)
+
+    try:
+        if not os.path.exists('/app/data/recommender_history.csv'):
+            df.to_csv('/app/data/recommender_history.csv', index=False)
+            print("recommended_history saved")
+        else:
+            df.to_csv('/app/data/recommender_history.csv', mode='a', index=False, header=False)
+            print("recommended_history saved")
+    except Exception as e:
+        print(f"Error saving recommender history to CSV: {e}")
 
     
 # Login Page
@@ -83,6 +111,9 @@ def login():
         print("Password:", password)  # Debug statement
 
         authenticated = authenticate(username, password)
+
+        global user_id
+        user_id = username
 
         if authenticated:
             # Retrived Data
@@ -178,6 +209,9 @@ def chatbot():
 
         except Exception as e:
             bot_response = f"Error: {str(e)}"
+
+        # timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        # recommended_history(bot_response, user_id, timestamp)
 
         return jsonify({'response': bot_response})
 
