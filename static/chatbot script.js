@@ -3,6 +3,14 @@ $(document).ready(function () {
     $('#sendMessageBtn').click(function () {
         sendMessage();
     });
+
+    // Add event listener for suggestion boxes
+    $('.suggestion-box').click(function() {
+        var suggestionText = $(this).text();
+        $('#userMessage').val(suggestionText); // Set the suggestion text in the input field
+        sendMessage(); // Call sendMessage function
+        $('.suggestion-grid').hide(); // Hide the suggestion grid after sending message
+    });
   
     $('#userMessage').keypress(function (e) {
         if (e.which === 13) { // Enter key pressed
@@ -46,11 +54,10 @@ $(document).ready(function () {
             }
         });
     }
+
     // Function to scroll the message box to the bottom
     function scrollToBottom() {
         var messageBox = document.getElementById('messageBox');
         messageBox.scrollTop = messageBox.scrollHeight;
     }
 });
-
-  
