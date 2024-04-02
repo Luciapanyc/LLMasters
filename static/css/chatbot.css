@@ -8,7 +8,7 @@
 body {
   width: 100%;
   height: 100vh;
-  background-color: #fde6b6;
+  background-color: ##FFFFF;
   margin: 0; /* Remove default body margin */
 }
 
@@ -29,7 +29,7 @@ body {
 }
 
 .response {
-  background-color: #ffc954d2;
+  background-color: #fde6b6;
   align-items: center; /* Center-align items vertically */
 }
 
@@ -43,7 +43,7 @@ body {
 }
 
 .suggestion-box {
-  background-color: #ffc954d2;
+  background-color: #fde6b6;
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
@@ -57,7 +57,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f4b686;
+  background-color: #fecca3;
 }
 
 .messagebar .bar-wrapper {
