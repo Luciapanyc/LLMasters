@@ -21,6 +21,8 @@ $(document).ready(function () {
     function sendMessage() {
         var userMessage = $('#userMessage').val().trim();
         if (userMessage.length === 0) return;
+
+        $('#loadingSpinner').show();
   
         var userMessageHtml =
             `<div class="chat message">
@@ -47,10 +49,12 @@ $(document).ready(function () {
                     </div>`;
                 $('#messageBox').append(botResponseHtml);
                 // Scroll to bottom after appending messages
+                $('#loadingSpinner').hide();
                 scrollToBottom();
             },
             error: function () {
                 console.error('Error sending message');
+                $('#loadingSpinner').hide();
             }
         });
     }
