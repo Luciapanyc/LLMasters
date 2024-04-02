@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     const userId = "geovanny"; // Replace "123" with the desired user ID
-    const recommendationLimit = 30; // Specify the maximum number of recommendations to display
+    const recommendationLimit = 100; // Specify the maximum number of recommendations to display
 
     fetch("listening_history.csv") // Replace with the actual path to the CSV file inside docker
         .then(response => response.text())
