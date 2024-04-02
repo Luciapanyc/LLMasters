@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,14 +11,22 @@
 </head>
 <body>
   <div class="chatbox-wrapper">
+    <!-- Add the loading spinner here -->
+    <div id="loadingSpinner" class="spinner"></div>
     <div id="messageBox" class="message-box">
       <div class="chat response">
-        <img src="../static/profile.jpg">
-        <span>Hello there! <br> 
-          How can I help you today.
-        </span>
+        <img src="../static/musicrecco_chatbotprofile.png">
+        <span>Hello there, I am MusicRecco! <br> Ask me all you want about music recommendations!</span>
       </div>
     </div>
+
+    <div class="suggestion-grid">
+      <div class="suggestion-box">What are the top trending songs right now?</div>
+      <div class="suggestion-box">Can you recommend some upbeat pop songs for a workout playlist?</div>
+      <div class="suggestion-box">Recommend me songs based on my favourite genres!</div>
+      <div class="suggestion-box">Surprise me!</div>
+    </div>
+
     <div class="messagebar">
       <div class="bar-wrapper">
         <input type="text" id="userMessage" placeholder="Enter your message...">

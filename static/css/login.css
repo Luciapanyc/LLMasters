@@ -33,6 +33,8 @@ body {
 /* Header styles */
 .header {
   margin-bottom: 20px;
+  display: flex;
+  justify-content: center; /* Center-align items horizontally */
 }
 
 .header h1 {
@@ -81,7 +83,7 @@ button[type="submit"]:hover {
 .logo img {
   display: block;
   margin: 20px auto;
-  height: 100px;
+  height: 150px;
 }
 
 /* Additional styling for sign-up section */

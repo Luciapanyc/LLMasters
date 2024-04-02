@@ -1,35 +1,55 @@
-*{
+* {
   padding: 0;
   margin: 0;
   font-family: 'Poppins', sans-serif;
   box-sizing: border-box;
 }
 
-body{
+body {
   width: 100%;
   height: 100vh;
-  background-color: #33343f;
+  background-color: ##FFFFF;
+  margin: 0; /* Remove default body margin */
 }
 
-.chat{
+.chat {
   display: flex;
   gap: 20px;
   padding: 25px;
-  color: #fff;
+  color: #000000;
   font-size: 15px;
   font-weight: 300;
+  align-items: center; /* Center-align items vertically */
+  margin-bottom: 10px; /* Add some space between chat bubbles */
 }
 
-.chat img{
-  width: 35px;
-  height: 35px;
+.chat img {
+  width: 65px;
+  height: 65px;
 }
 
-.response{
-  background-color: #494b59;
+.response {
+  background-color: #fde6b6;
+  align-items: center; /* Center-align items vertically */
 }
 
-.messagebar{
+.suggestion-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  justify-content: center; /* Optional: Center the grid horizontally */
+  margin-bottom: 20px; /* Increase the bottom margin */
+  margin-top: -100px; /* Move the grid upwards */
+}
+
+.suggestion-box {
+  background-color: #fde6b6;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.messagebar {
   position: fixed;
   bottom: 0;
   height: 5rem;
@@ -37,12 +57,11 @@ body{
   display: flex;
   align-items: center;
   justify-content: center;
-  border-top: 1px solid #494b59;
-  background-color: #33343f;
+  background-color: #fecca3;
 }
 
-.messagebar .bar-wrapper{
-  background-color: #494b59;
+.messagebar .bar-wrapper {
+  background-color: #cdcdcd;
   border-radius: 5px;
   width: 60vw;
   padding: 10px;
@@ -51,35 +70,54 @@ body{
   justify-content: space-between;
 }
 
-.bar-wrapper input{
+.bar-wrapper input {
   width: 100%;
   padding: 5px;
   border: none;
   outline: none;
   font-size: 14px;
   background: none;
-  color: #ccc;
+  color: #000000;
 }
 
-.bar-wrapper input::placeholder{
-  color: #ccc;
+.bar-wrapper input::placeholder {
+  color: #000000;
 }
 
-.messagebar button{
+.messagebar button {
   display: flex;
   align-items: center;
   justify-content: center;
   background: none;
   border: none;
-  color: #fff;
+  color: #000000;
   cursor: pointer;
 }
 
-.message-box{
+.message-box {
   height: calc(100vh - 5rem);
   overflow-y: auto;
 }
 
 .response-text {
   white-space: pre-line; /* or pre-wrap */
+}
+
+.spinner {
+  display: none; /* Initially hide the spinner */
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #333;
+  animation: spin 1s infinite linear; /* Apply rotation animation */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -20px; /* Adjust according to spinner size */
+  margin-left: -20px; /* Adjust according to spinner size */
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
