@@ -67,30 +67,101 @@ def authenticate(username, password):
         print("Error during authentication:", e)  # Debug statement
         return False
     
-def recommended_history(response, user_id, timestamp):
-    pattern = r'\"([^\"]*)\" by ([A-Za-z\s&./]+)'
+# with artist_name
+# def recommended_history(response, user_id, timestamp):
+#     pattern = r'\"([^\"]*)\" by ([A-Za-z0-9\s&./\'$()]+)'
+#     pattern2 = r'^([A-Za-z0-9\s&./\']+) by ([A-Za-z0-9\s&./\'$()]+)'
+#     pattern3 = r'^([A-Za-z0-9\s&./\']+) - ([A-Za-z0-9\s&./\'$()]+)'
+#     matches = re.findall(pattern, response)
+#     matches2 = re.findall(pattern2, response)
+#     matches3 = re.findall(pattern3, response)
+#     data = []
+
+#     for match in matches:
+#         song_name = match[0]
+#         artist_name = match[1]
+#         if 'And' in artist_name:
+#             artist_name = artist_name.split('And')[0].strip()
+#         data.append([user_id, song_name, artist_name, timestamp])
+
+#     for match in matches2:
+#         song_name = match[0]
+#         artist_name = match[1]
+#         if 'And' in artist_name:
+#             artist_name = artist_name.split('And')[0].strip()
+#         data.append([user_id, song_name, artist_name, timestamp])
+
+#     for match in matches3:
+#         song_name = match[0]
+#         artist_name = match[1]
+#         if 'And' in artist_name:
+#             artist_name = artist_name.split('And')[0].strip()
+#         data.append([user_id, song_name, artist_name, timestamp])
+
+#     df = pd.DataFrame(data, columns=['UserID', 'song_name', 'artist_name', 'timestamp'])
+#     print(df)
+
+#     try:
+#         if not os.path.exists('/app/data/recommender_history.csv'):
+#             df.to_csv('/app/data/recommender_history.csv', index=False)
+#             print("recommended_history saved")
+#         else:
+#             df.to_csv('/app/data/recommender_history.csv', mode='a', index=False, header=False)
+#             print("recommended_history saved")
+#     except Exception as e:
+#         print(f"Error saving recommender history to CSV: {e}")
+
+# extract only the songs
+def recommended_history_song(response, user_id, timestamp):
+    pattern = r'\"([^\"]*)\" by ([A-Za-z0-9\s&./\'$()]+)'
+    pattern2 = r'^([A-Za-z0-9\s&./\']+) by ([A-Za-z0-9\s&./\'$()]+)'
+    pattern3 = r'^([A-Za-z0-9\s&./\']+) - ([A-Za-z0-9\s&./\'$()]+)'
     matches = re.findall(pattern, response)
+    matches2 = re.findall(pattern2, response)
+    matches3 = re.findall(pattern3, response)
     data = []
 
     for match in matches:
         song_name = match[0]
-        artist_name = match[1]
-        if 'And' in artist_name:
-            artist_name = artist_name.split('And')[0].strip()
-        data.append([user_id, song_name, artist_name, timestamp])
+        data.append([user_id, song_name, timestamp])
 
-    df = pd.DataFrame(data, columns=['UserID', 'song_name', 'artist_name', 'timestamp'])
+    for match in matches2:
+        song_name = match[0]
+        data.append([user_id, song_name, timestamp])
+
+    for match in matches3:
+        song_name = match[0]
+        data.append([user_id, song_name, timestamp])
+
+    df = pd.DataFrame(data, columns=['UserID', 'song_name', 'timestamp'])
     print(df)
 
     try:
-        if not os.path.exists('/app/data/recommender_history.csv'):
-            df.to_csv('/app/data/recommender_history.csv', index=False)
+        if not os.path.exists('/app/data/recommender_history_song.csv'):
+            df.to_csv('/app/data/recommender_history_song.csv', index=False)
             print("recommended_history saved")
         else:
-            df.to_csv('/app/data/recommender_history.csv', mode='a', index=False, header=False)
+            df.to_csv('/app/data/recommender_history_song.csv', mode='a', index=False, header=False)
             print("recommended_history saved")
     except Exception as e:
         print(f"Error saving recommender history to CSV: {e}")
+
+# Authenticate user
+def authenticate(username, password):
+    try:
+        user_credentials = load_user_credentials()
+        print("User Credentials:", user_credentials)  # Debug statement
+        if username in user_credentials:
+            if user_credentials[username] == password:
+                print("Authentication successful for user:", username)  # Debug statement
+                return True
+            print("Authentication failed for user:", username)  # Debug statement
+        print("Authentication failed:", username, "No such user.") # Debug statement
+        return False
+    except Exception as e:
+        print("Error during authentication:", e)  # Debug statement
+        return False
+
 
     
 # Login Page
@@ -120,7 +191,7 @@ def login():
             user = pd.read_csv('/app/data/user.csv')
             user = user[user['UserID'] == username]
 
-            history = pd.read_csv('/app/data/listening history.csv')
+            history = pd.read_csv('/app/data/listening_history.csv')
             history = history[history['UserID'] == username]
 
             # Converted to Text
@@ -210,8 +281,8 @@ def chatbot():
         except Exception as e:
             bot_response = f"Error: {str(e)}"
 
-        # timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        # recommended_history(bot_response, user_id, timestamp)
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        recommended_history_song(bot_response, user_id, timestamp)
 
         return jsonify({'response': bot_response})
 
