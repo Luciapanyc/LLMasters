@@ -89,7 +89,7 @@ def login():
             user = pd.read_csv('/app/data/user.csv')
             user = user[user['UserID'] == username]
 
-            history = pd.read_csv('/app/data/listening history.csv')
+            history = pd.read_csv('/app/data/listening_history.csv')
             history = history[history['UserID'] == username]
 
             # Converted to Text
@@ -180,7 +180,14 @@ def chatbot():
             bot_response = f"Error: {str(e)}"
 
         return jsonify({'response': bot_response})
-
+    
+@app.route('/recommended', methods=['GET'])
+def recommender():
+    try:
+        return render_template('recommended.html'), 200
+    except Exception as e:
+        error_message = f"Error rendering template: {e}"
+        return jsonify({'error': error_message}), 500
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port="5000", debug=True)
