@@ -113,6 +113,10 @@ def authenticate(username, password):
 
 # extract only the songs
 def recommended_history_song(response, user_id, timestamp):
+
+    if ':' in response:
+        response = response.split(':', 1)[1].strip()
+        
     pattern = r'\"([^\"]*)\" by ([A-Za-z0-9\s&./\'$()]+)'
     pattern2 = r'^([A-Za-z0-9\s&./\']+) by ([A-Za-z0-9\s&./\'$()]+)'
     pattern3 = r'^([A-Za-z0-9\s&./\']+) - ([A-Za-z0-9\s&./\'$()]+)'
