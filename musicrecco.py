@@ -67,59 +67,15 @@ def authenticate(username, password):
         print("Error during authentication:", e)  # Debug statement
         return False
     
-# with artist_name
-# def recommended_history(response, user_id, timestamp):
-#     pattern = r'\"([^\"]*)\" by ([A-Za-z0-9\s&./\'$()]+)'
-#     pattern2 = r'^([A-Za-z0-9\s&./\']+) by ([A-Za-z0-9\s&./\'$()]+)'
-#     pattern3 = r'^([A-Za-z0-9\s&./\']+) - ([A-Za-z0-9\s&./\'$()]+)'
-#     matches = re.findall(pattern, response)
-#     matches2 = re.findall(pattern2, response)
-#     matches3 = re.findall(pattern3, response)
-#     data = []
-
-#     for match in matches:
-#         song_name = match[0]
-#         artist_name = match[1]
-#         if 'And' in artist_name:
-#             artist_name = artist_name.split('And')[0].strip()
-#         data.append([user_id, song_name, artist_name, timestamp])
-
-#     for match in matches2:
-#         song_name = match[0]
-#         artist_name = match[1]
-#         if 'And' in artist_name:
-#             artist_name = artist_name.split('And')[0].strip()
-#         data.append([user_id, song_name, artist_name, timestamp])
-
-#     for match in matches3:
-#         song_name = match[0]
-#         artist_name = match[1]
-#         if 'And' in artist_name:
-#             artist_name = artist_name.split('And')[0].strip()
-#         data.append([user_id, song_name, artist_name, timestamp])
-
-#     df = pd.DataFrame(data, columns=['UserID', 'song_name', 'artist_name', 'timestamp'])
-#     print(df)
-
-#     try:
-#         if not os.path.exists('/app/data/recommender_history.csv'):
-#             df.to_csv('/app/data/recommender_history.csv', index=False)
-#             print("recommended_history saved")
-#         else:
-#             df.to_csv('/app/data/recommender_history.csv', mode='a', index=False, header=False)
-#             print("recommended_history saved")
-#     except Exception as e:
-#         print(f"Error saving recommender history to CSV: {e}")
-
 # extract only the songs
 def recommended_history_song(response, user_id, timestamp):
 
     if ':' in response:
         response = response.split(':', 1)[1].strip()
-        
+
     pattern = r'\"([^\"]*)\" by ([A-Za-z0-9\s&./\'$()]+)'
-    pattern2 = r'^([A-Za-z0-9\s&./\']+) by ([A-Za-z0-9\s&./\'$()]+)'
-    pattern3 = r'^([A-Za-z0-9\s&./\']+) - ([A-Za-z0-9\s&./\'$()]+)'
+    pattern2 = r'\+\s*([^+]+?)\s+by\s+[A-Za-z\s&.()]+'
+    pattern3 = r'\+\s*([^+]+?)\s+-\s+[A-Za-z\s&.()]+'
     matches = re.findall(pattern, response)
     matches2 = re.findall(pattern2, response)
     matches3 = re.findall(pattern3, response)
@@ -128,14 +84,18 @@ def recommended_history_song(response, user_id, timestamp):
     for match in matches:
         song_name = match[0]
         data.append([user_id, song_name, timestamp])
+        print(song_name)
 
-    for match in matches2:
-        song_name = match[0]
-        data.append([user_id, song_name, timestamp])
+    if len(matches) == 0:
+        for match in matches2:
+            song_name = match
+            data.append([user_id, song_name, timestamp])
+            print(song_name)
 
-    for match in matches3:
-        song_name = match[0]
-        data.append([user_id, song_name, timestamp])
+        for match in matches3:
+            song_name = match
+            data.append([user_id, song_name, timestamp])
+            print(song_name)
 
     df = pd.DataFrame(data, columns=['UserID', 'song_name', 'timestamp'])
     print(df)

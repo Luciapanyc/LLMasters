@@ -21,6 +21,7 @@ body {
   font-weight: 300;
   align-items: center; /* Center-align items vertically */
   margin-bottom: 10px; /* Add some space between chat bubbles */
+  margin-left: 160px;
 }
 
 .chat img {
@@ -40,6 +41,7 @@ body {
   justify-content: center; /* Optional: Center the grid horizontally */
   margin-bottom: 20px; /* Increase the bottom margin */
   margin-top: -100px; /* Move the grid upwards */
+  margin-left: 160px;
 }
 
 .suggestion-box {
@@ -143,4 +145,35 @@ body {
       background-color: #000000;
       border-color: #000000;
   }
+}
+
+.sidebar {
+  height: 100%;
+  width: 160px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color:#c8c8c8;;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.sidebar-button {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 15px;
+  color: #383838;
+  background-color: transparent;
+  border: none; 
+  cursor: pointer;
+  display: block;
+}
+
+.sidebar-button:hover {
+  color: #000000;
+}
+
+.sidebar-button:focus {
+  outline: none; 
 }
