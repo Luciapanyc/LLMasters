@@ -289,7 +289,14 @@ def chatbot():
         recommended_history_song(bot_response, user_id, timestamp)
 
         return jsonify({'response': bot_response})
-
+    
+@app.route('/recommended', methods=['GET'])
+def recommender():
+    try:
+        return render_template('recommended.html'), 200
+    except Exception as e:
+        error_message = f"Error rendering template: {e}"
+        return jsonify({'error': error_message}), 500
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port="5000", debug=True)
