@@ -12,3 +12,43 @@ th, td {
 th {
   background-color: #fde6b6;
 }
+
+.table-container {
+  max-width: 800px; /* Set the maximum width of the container */
+  margin: 0 auto; /* Center the container horizontally */
+  padding: 20px; /* Add some padding around the container */
+  border: 1px solid #ccc; /* Add a border around the container */
+  border-radius: 5px; /* Add border radius for a rounded look */
+}
+
+
+.sidebar {
+  height: 100%;
+  width: 160px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color:#c8c8c8;;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.sidebar-button {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 15px;
+  color: #383838;
+  background-color: transparent;
+  border: none; 
+  cursor: pointer;
+  display: block;
+}
+
+.sidebar-button:hover {
+  color: #000000;
+}
+
+.sidebar-button:focus {
+  outline: none; 
+}

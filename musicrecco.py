@@ -3,6 +3,8 @@ from h2ogpte import H2OGPTE
 import numpy as np
 import pandas as pd
 import os
+from datetime import datetime
+import re
 
 
 app = Flask(__name__)
@@ -25,6 +27,7 @@ songs = pd.read_csv('/app/data/songs_short.csv')
 songs_txt = songs.to_csv(index=False)
 songs_data = client.upload('songs_short.txt', songs_txt.encode())
 client.ingest_uploads(collection_id, [songs_data])
+user_id = " "
 
 
 # Load user credentials from Excel file
@@ -63,6 +66,66 @@ def authenticate(username, password):
     except Exception as e:
         print("Error during authentication:", e)  # Debug statement
         return False
+    
+# extract only the songs
+def recommended_history_song(response, user_id, timestamp):
+
+    if ':' in response:
+        response = response.split(':', 1)[1].strip()
+
+    pattern = r'\"([^\"]*)\" by ([A-Za-z0-9\s&./\'$()]+)'
+    pattern2 = r'\+\s*([^+]+?)\s+by\s+[A-Za-z\s&.()]+'
+    pattern3 = r'\+\s*([^+]+?)\s+-\s+[A-Za-z\s&.()]+'
+    matches = re.findall(pattern, response)
+    matches2 = re.findall(pattern2, response)
+    matches3 = re.findall(pattern3, response)
+    data = []
+
+    for match in matches:
+        song_name = match[0]
+        data.append([user_id, song_name, timestamp])
+        print(song_name)
+
+    if len(matches) == 0:
+        for match in matches2:
+            song_name = match
+            data.append([user_id, song_name, timestamp])
+            print(song_name)
+
+        for match in matches3:
+            song_name = match
+            data.append([user_id, song_name, timestamp])
+            print(song_name)
+
+    df = pd.DataFrame(data, columns=['UserID', 'song_name', 'timestamp'])
+    print(df)
+
+    try:
+        if not os.path.exists('/app/data/recommender_history_song.csv'):
+            df.to_csv('/app/data/recommender_history_song.csv', index=False)
+            print("recommended_history saved")
+        else:
+            df.to_csv('/app/data/recommender_history_song.csv', mode='a', index=False, header=False)
+            print("recommended_history saved")
+    except Exception as e:
+        print(f"Error saving recommender history to CSV: {e}")
+
+# Authenticate user
+def authenticate(username, password):
+    try:
+        user_credentials = load_user_credentials()
+        print("User Credentials:", user_credentials)  # Debug statement
+        if username in user_credentials:
+            if user_credentials[username] == password:
+                print("Authentication successful for user:", username)  # Debug statement
+                return True
+            print("Authentication failed for user:", username)  # Debug statement
+        print("Authentication failed:", username, "No such user.") # Debug statement
+        return False
+    except Exception as e:
+        print("Error during authentication:", e)  # Debug statement
+        return False
+
 
     
 # Login Page
@@ -83,6 +146,9 @@ def login():
         print("Password:", password)  # Debug statement
 
         authenticated = authenticate(username, password)
+
+        global user_id
+        user_id = username
 
         if authenticated:
             # Retrived Data
@@ -178,6 +244,9 @@ def chatbot():
 
         except Exception as e:
             bot_response = f"Error: {str(e)}"
+
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        recommended_history_song(bot_response, user_id, timestamp)
 
         return jsonify({'response': bot_response})
     

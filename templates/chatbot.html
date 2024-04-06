@@ -10,6 +10,11 @@
     <link rel="icon" type="image/png" href="../static/musicrecco.png"/>
 </head>
 <body>
+  <div class="sidebar">
+    <button onclick="window.location.href='/chatbot'" class="sidebar-button">Home</button>
+    <button onclick="window.location.href='/recommended'" class="sidebar-button">History</button>
+    <button onclick="window.location.href='/'" class="sidebar-button">Sign out</button>
+  </div>
   <div class="chatbox-wrapper">
     <!-- Add the loading spinner here -->
     <div id="loadingSpinner" class="spinner"></div>
@@ -17,9 +22,9 @@
       <div class="chat response">
         <img src="../static/musicrecco_chatbotprofile.png">
         <span>Hello there, I am MusicRecco! <br> Ask me all you want about music recommendations!</span>
-        <a href = '/recommended'>
+        <!-- <a href = '/recommended'>
           <button class = 'hist-button'>Recommended History</button>
-        </a>
+        </a> -->
       </div>
     </div>
 

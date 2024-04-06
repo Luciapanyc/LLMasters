@@ -6,8 +6,14 @@
     <script src="../static/rec_script.js"></script>
 </head>
 <body>
-    <h1>Recommended History</h1>
-
-    <table id="historyTable"></table>
+    <div class="sidebar">
+        <button onclick="window.location.href='/chatbot'" class="sidebar-button">Home</button>
+        <button onclick="window.location.href='/recommended'" class="sidebar-button">History</button>
+        <button onclick="window.location.href='/'" class="sidebar-button">Sign out</button>
+    </div>
+    <div class="table-container">
+        <h1>Recommended History</h1>
+        <table id="historyTable"></table>
+    </div>
 </body>
 </html>
