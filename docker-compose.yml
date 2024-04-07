@@ -6,4 +6,4 @@ services:
       context: .
       dockerfile: flask_dockerfile
     ports:
-      - "9001:5000"
+      - "9001:9001"
