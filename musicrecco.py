@@ -5,7 +5,7 @@ import pandas as pd
 import os
 from datetime import datetime
 import re
-
+import pathlib
 
 app = Flask(__name__)
 
@@ -16,8 +16,6 @@ client = H2OGPTE(
 )
 
 def ingest_documents(client: H2OGPTE):
-    import os
-    import pathlib
 
     collection_id = None
     name = 'Musicrecco'
@@ -282,7 +280,6 @@ def recommender():
         error_message = f"Error rendering template: {e}"
         return jsonify({'error': error_message}), 500
 
-
 ### 6. Logout
 @app.route('/logout', methods=['GET'])
 def logout():
@@ -296,9 +293,6 @@ def logout():
         return redirect(url_for('home'))
     except Exception as e:
         return jsonify({'error': f"Internal Server Error: {e}"}), 500
-
-
-
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port="9001", debug=True)
