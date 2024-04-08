@@ -14,18 +14,19 @@
             <h1>Musicrecco</h1>
         </header>
         <ul>
-            <li><a href="#"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="#"><i class="fas fa-comments"></i>Chatbot</a></li>
-            <li><a href="#"><i class="fas fa-history"></i>History</a></li>        
+            <li><a href="#" onclick="redirectTo('dashboard')"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="#" onclick="redirectTo('chatbot')"><i class="fas fa-comments"></i>Chatbot</a></li>
+            <li><a href="#" onclick="redirectTo('recommended')"><i class="fas fa-history"></i>History</a></li>        
         </ul>
         <div class="bottom-container">
             <ul>
-                <li><a href="#"><i class="fas fa-cog"></i>Settings</a></li>
-                <li><a href="#"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+                <li><a href="#" onclick="redirectTo('settings')"><i class="fas fa-cog"></i>Settings</a></li>
+                <li><a href="#" onclick="redirectTo('logout')"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
             </ul>
         </div>
     </div>
     
+    ### Place Holder Still in testing
     <div class="main-container">
         <header>Welcome <span id="username">...</span></header>
         <div class="recommendations">
@@ -44,4 +45,27 @@
         </div>
     </div>
 </body>
+<script>
+    function redirectTo(page) {
+        switch (page) {
+            case 'home':
+                window.location.href = '/home';
+                break;
+            case 'chatbot':
+                window.location.href = '/chatbot';
+                break;
+            case 'history':
+                window.location.href = '/recommended';
+                break;
+            case 'settings':
+                window.location.href = '/settings';
+                break;
+            case 'logout':
+                window.location.href = '/logout';
+                break;
+            default:
+                console.log('Invalid page');
+        }
+    }
+</script>
 </html>

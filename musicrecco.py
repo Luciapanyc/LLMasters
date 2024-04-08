@@ -121,7 +121,7 @@ def login():
             # Ingest the uploaded data
             client.ingest_uploads(collection_id, [user_data, history_data])
 
-            return redirect(url_for('chatbot')), 302
+            return redirect(url_for('dashboard')), 302
         else:
             return "Invalid UserID or Password", 401
     except Exception as e:
@@ -140,54 +140,55 @@ def save_user_data_to_csv(data):
         return False
 
 # Signup Page
-@app.route('/signup', methods=['GET'])
-def show_signup_form():
-    try:
-        return render_template('signup.html'), 200
-    except Exception as e:
-        error_message = f"Error rendering signup template: {e}"
-        return jsonify({'error': error_message}), 500
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'GET':
+        try:
+            return render_template('signup.html'), 200
+        except Exception as e:
+            error_message = f"Error rendering signup template: {e}"
+            return jsonify({'error': error_message}), 500
+    
+    elif request.method == 'POST':
+        try:
+            # Extract form data
+            user_id = request.form['UserID']
+            password = request.form['Password']
+            name = request.form['Name']
+            favorite_genres = request.form.getlist('Favourite_Genres[]')
 
-@app.route('/signup', methods=['POST'])
-def process_signup():
-    try:
-        # Extract form data
-        user_id = request.form['UserID']
-        password = request.form['Password']
-        name = request.form['Name']
-        favorite_genres = request.form.getlist('Favourite_Genres[]')
+            print("User ID:", user_id)
+            print("Password:", password)
+            print("Name:", name)
+            print("Favorite Genres:", favorite_genres)
 
-        print("User ID:", user_id)
-        print("Password:", password)
-        print("Name:", name)
-        print("Favorite Genres:", favorite_genres)
+            # Prepare data to save to CSV
+            user_data = {
+                'UserID': [user_id],
+                'Password': [password],
+                'Name': [name],
+                'Genre_1': [''],
+                'Genre_2': [''],
+                'Genre_3': ['']
+            }
+            
+            for i, genre in enumerate(favorite_genres[:3]):
+                user_data[f'Genre_{i+1}'] = [genre]
 
-        # Prepare data to save to CSV
-        user_data = {
-            'UserID': [user_id],
-            'Password': [password],
-            'Name': [name],
-            'Genre_1': [''],
-            'Genre_2': [''],
-            'Genre_3': ['']
-        }
-        
-        for i, genre in enumerate(favorite_genres[:3]):
-            user_data[f'Genre_{i+1}'] = [genre]
-
-        # Save user data to CSV
-        if save_user_data_to_csv(user_data):
-            # Redirect to the login page upon successful signup
-            return redirect(url_for('home'))
-        else:
-            return "Failed to save user data. Please try again.", 500
-    except Exception as e:
-        return jsonify({'error': f"Internal Server Error: {e}"}), 500
+            # Save user data to CSV
+            if save_user_data_to_csv(user_data):
+                # Redirect to the login page upon successful signup
+                return redirect(url_for('home'))
+            else:
+                return "Failed to save user data. Please try again.", 500
+        except Exception as e:
+            return jsonify({'error': f"Internal Server Error: {e}"}), 500
 
 
-### 3. Login Home Page
-@app.route('/home', methods=['GET'])
-def login_home():
+
+### 3. Login Dashboard
+@app.route('/dashboard', methods=['GET'])
+def dashboard():
     try:
         return render_template('home.html'), 200
     except Exception as e:
@@ -197,36 +198,36 @@ def login_home():
 
 ### 4. ChatBot Page
 # Chatbot Page - GET method
-@app.route('/chatbot', methods=['GET'])
-def show_chatbot():
-    try:
-        return render_template('chatbot.html'), 200
-    except Exception as e:
-        error_message = f"Error rendering chatbot template: {e}"
-        return jsonify({'error': error_message}), 500
-
-# Chatbot Page - POST method
-@app.route('/chatbot', methods=['POST'])
-def process_chat_message():
-    try:
-        user_message = request.form['message']
+@app.route('/chatbot', methods=['GET', 'POST'])
+def chatbot():
+    if request.method == 'GET':
+        try:
+            return render_template('chatbot.html'), 200
+        except Exception as e:
+            error_message = f"Error rendering chatbot template: {e}"
+            return jsonify({'error': error_message}), 500
+    
+    elif request.method == 'POST':
+        try:
+            user_message = request.form['message']
         
-        with client.connect(chat_session_id) as session:
-            answer = session.query(
-                message=user_message,
-                system_prompt='Assume music and song to be the same word. When a question asks for similar music, recommend fewer than 5 songs unless told otherwise. Find similar music based on genre and other factors such as danceability, loudness, speechiness, and more. Just return the song name unless stated otherwise. Do not give too many details',
-                rag_config={"rag_type": "rag"},
-            ).content
+            with client.connect(chat_session_id) as session:
+                answer = session.query(
+                    message=user_message,
+                    system_prompt='Assume music and song to be the same word. When a question asks for similar music, recommend fewer than 5 songs unless told otherwise. Find similar music based on genre and other factors such as danceability, loudness, speechiness, and more. Just return the song name unless stated otherwise. Do not give too many details',
+                    rag_config={"rag_type": "rag"},
+                ).content
             
-            bot_response = answer
+                bot_response = answer
 
-    except Exception as e:
-        bot_response = f"Error: {str(e)}"
+        except Exception as e:
+            bot_response = f"Error: {str(e)}"
 
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    recommended_history_song(bot_response, user_id, timestamp)
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        recommended_history_song(bot_response, user_id, timestamp)
 
-    return jsonify({'response': bot_response})
+        return jsonify({'response': bot_response})
+
 
 
 ### 5. Recommendation Page    
@@ -280,6 +281,23 @@ def recommender():
     except Exception as e:
         error_message = f"Error rendering template: {e}"
         return jsonify({'error': error_message}), 500
+
+
+### 6. Logout
+@app.route('/logout', methods=['GET'])
+def logout():
+    try:
+        # Perform logout actions such as clearing session data, etc.
+        # For example:
+        # Clear user session data
+        global user_id
+        user_id = ""
+        # Redirect to the login page
+        return redirect(url_for('home'))
+    except Exception as e:
+        return jsonify({'error': f"Internal Server Error: {e}"}), 500
+
+
 
 
 if __name__ == "__main__":
