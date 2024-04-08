@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500');
+
+* {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-decoration: none;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+header img {
+  height: 50px;
+  margin-right: 5px;
+}
+
+header h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  width: 230px; /* Fixed width */
+  height: 100%;
+  background: #111;
+  align-items: center;
+}
+
+.sidebar header {
+  font-size: 22px;
+  color: white;
+  line-height: 70px;
+  text-align: center;
+  background: #063146;
+}
+
+.sidebar ul a {
+  display: block;
+  height: 100%;
+  width: 100%;
+  line-height: 65px;
+  font-size: 20px;
+  color: white;
+  padding-left: 20px;
+  box-sizing: border-box;
+  border-top: 1px solid #222;
+  border-bottom: 1px solid #000;
+  transition: .4s;
+  align-items: center;
+}
+
+.sidebar ul a:hover {
+  padding-left: 30px;
+}
+
+.sidebar ul a i {
+  margin-right: 10px;
+}
+
+section {
+  margin-left: 230px;
+  padding: 20px;
+  transition: all .5s;
+}
+
+.bottom-container {
+  position: absolute;
+  bottom: 0;
+  padding: 20px;
+}
+
+.bottom-container ul {
+  list-style: none;
+  padding: 0;
+}
+
+.bottom-container li {
+  margin-bottom: 10px;
+}
+
+.bottom-container a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.bottom-container a i {
+  margin-right: 10px;
+}
