@@ -9,27 +9,47 @@ import re
 
 app = Flask(__name__)
 
-#h2o Model 
+### 0.h2o Model 
 client = H2OGPTE(
     address='https://h2ogpte.genai.h2o.ai',
     api_key='sk-cfLVheKJ5GJMA7oEJoPKXPOul4aWtCk9fnMD0BiYBYjaH53J',
 )
 
-# Create Personal collection
-collection_id = client.create_collection(
-name='Musicrecco',
-description='Music Recommender',
-)
+def ingest_documents(client: H2OGPTE):
+    import os
+    import pathlib
 
-chat_session_id = client.create_chat_session(collection_id)
+    collection_id = None
+    name = 'Musicrecco'
 
-# Ingest Data
-songs_data = client.upload('songs_short.xlsx', open('/app/data/songs_short.xlsx', 'rb'))
-client.ingest_uploads(collection_id, [songs_data])
+    print("Recent collections:")
+    recent_collections = client.list_recent_collections(0, 1000)
+    for c in recent_collections:
+        if c.name == name and c.document_count:
+            collection_id = c.id
+            break
+
+    # Create Collection
+    if collection_id is None:
+        print(f"Creating collection: {name} ...")
+        collection_id = client.create_collection(
+            name=name,
+            description='Music Recommender',
+        )
+        print(f"New collection: {collection_id} ...")
+
+        # Upload file into collection
+        songs_data = client.upload('songs_short.xlsx', open('/app/data/songs_short.xlsx', 'rb'))
+        client.ingest_uploads(collection_id, [songs_data])
+
+        print(f"DONE: {collection_id}")
+    return collection_id
 
 # Global Variables
 user_id = " "
 name = " "
+collection_id = ingest_documents(client)
+chat_session_id = client.create_chat_session(collection_id)
 
 ### 1. Login Page
 # Load user credentials from Excel file
@@ -209,20 +229,7 @@ def process_chat_message():
     return jsonify({'response': bot_response})
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+### 5. Recommendation Page    
 # extract only the songs
 def recommended_history_song(response, user_id, timestamp):
 
@@ -265,13 +272,6 @@ def recommended_history_song(response, user_id, timestamp):
             print("recommended_history saved")
     except Exception as e:
         print(f"Error saving recommender history to CSV: {e}")
-
-
-
-
-
-
-
     
 @app.route('/recommended', methods=['GET'])
 def recommender():
@@ -280,6 +280,7 @@ def recommender():
     except Exception as e:
         error_message = f"Error rendering template: {e}"
         return jsonify({'error': error_message}), 500
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port="9001", debug=True)
