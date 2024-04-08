@@ -24,9 +24,7 @@ description='Music Recommender',
 chat_session_id = client.create_chat_session(collection_id)
 
 # Ingest Data
-songs = pd.read_csv('/app/data/songs_short.csv')
-songs_txt = songs.to_csv(index=False)
-songs_data = client.upload('songs_short.txt', songs_txt.encode())
+songs_data = client.upload('songs_short.xlsx', open('/app/data/songs_short.xlsx', 'rb'))
 client.ingest_uploads(collection_id, [songs_data])
 
 # Global Variables
@@ -177,6 +175,39 @@ def login_home():
         return jsonify({'error': error_message}), 500
 
 
+### 4. ChatBot Page
+# Chatbot Page - GET method
+@app.route('/chatbot', methods=['GET'])
+def show_chatbot():
+    try:
+        return render_template('chatbot.html'), 200
+    except Exception as e:
+        error_message = f"Error rendering chatbot template: {e}"
+        return jsonify({'error': error_message}), 500
+
+# Chatbot Page - POST method
+@app.route('/chatbot', methods=['POST'])
+def process_chat_message():
+    try:
+        user_message = request.form['message']
+        
+        with client.connect(chat_session_id) as session:
+            answer = session.query(
+                message=user_message,
+                system_prompt='Assume music and song to be the same word. When a question asks for similar music, recommend fewer than 5 songs unless told otherwise. Find similar music based on genre and other factors such as danceability, loudness, speechiness, and more. Just return the song name unless stated otherwise. Do not give too many details',
+                rag_config={"rag_type": "rag"},
+            ).content
+            
+            bot_response = answer
+
+    except Exception as e:
+        bot_response = f"Error: {str(e)}"
+
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    recommended_history_song(bot_response, user_id, timestamp)
+
+    return jsonify({'response': bot_response})
+
 
 
 
@@ -240,36 +271,7 @@ def recommended_history_song(response, user_id, timestamp):
 
 
 
-# Chatbot Page
-@app.route('/chatbot', methods=['GET', 'POST'])
-def chatbot():
-    if request.method == 'GET':
-        try:
-            return render_template('chatbot.html'), 200
-        except Exception as e:
-            error_message = f"Error rendering chatbot template: {e}"
-            return jsonify({'error': error_message}), 500
-    
-    else:
-        try:
-            user_message = request.form['message']
-            
-            with client.connect(chat_session_id) as session:
-                answer = session.query(
-                    message=user_message,
-                    system_prompt='Assume music and song to be the same word. When a question asks for similar music, recommend fewer than 5 songs unless told otherwise. Find similar music based on genre and other factors such as danceability, loudness, speechiness, and more. Just return the song name unless stated otherwise. Do not give too many details',
-                    rag_config={"rag_type": "rag"},
-                ).content
-                
-                bot_response = answer
 
-        except Exception as e:
-            bot_response = f"Error: {str(e)}"
-
-        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        recommended_history_song(bot_response, user_id, timestamp)
-
-        return jsonify({'response': bot_response})
     
 @app.route('/recommended', methods=['GET'])
 def recommender():

@@ -1,0 +1,31 @@
+.main-container {
+  margin-left: 250px; /* Same as sidebar width */
+  padding: 20px;
+}
+
+.main-container header {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+.recommendations {
+  display: flex;
+  justify-content: space-between;
+}
+
+.recommendation {
+  flex: 1;
+  text-align: center;
+}
+
+.recommendation img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.recommendation h2 {
+  font-size: 1.2em;
+  color: #333;
+}
