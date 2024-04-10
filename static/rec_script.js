@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-    const userId = "geovanny"; // Replace "123" with the desired user ID
+    const userId = "geovanny"; // Replacewith the desired user ID
     const recommendationLimit = 100; // Specify the maximum number of recommendations to display
 
-    fetch("listening_history.csv") // Replace with the actual path to the CSV file inside docker
+    fetch("listening_history.csv") // Replace with the actual path to the CSV file inside docker // filepath not working
 
         .then(response => response.text())
         .then(data => {
