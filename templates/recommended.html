@@ -2,18 +2,49 @@
 <html>
 <head>
     <title>Recommended History</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/history.css">
-    <script src="../static/rec_script.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/css/reccommendation.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/sidebar.css">
+
+    <title>History Page</title>
+    <link rel="icon" type="image/png" href="../static/musicrecco.png"/>
 </head>
 <body>
     <div class="sidebar">
-        <button onclick="window.location.href='/chatbot'" class="sidebar-button">Home</button>
-        <button onclick="window.location.href='/recommended'" class="sidebar-button">History</button>
-        <button onclick="window.location.href='/'" class="sidebar-button">Sign out</button>
-    </div>
-    <div class="table-container">
-        <h1>Recommended History</h1>
-        <table id="historyTable"></table>
+        <header>
+            <img src="../static/musicrecco_no_name.png">
+            <h1>Musicrecco</h1>
+        </header>
+        <ul>
+            <li><a href="#" onclick="redirectTo('dashboard')"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="#" onclick="redirectTo('chatbot')"><i class="fas fa-comments"></i>Chatbot</a></li>
+            <li><a href="#" onclick="redirectTo('recommended')"><i class="fas fa-history"></i>History</a></li>        
+        </ul>
+        <div class="bottom-container">
+            <ul>
+                <li><a href="#" onclick="redirectTo('settings')"><i class="fas fa-cog"></i>Settings</a></li>
+                <li><a href="#" onclick="redirectTo('logout')"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+            </ul>
+        </div>
+    </div>    
+
+    
+    <div class="main-container">
+        <h2>Recommended Songs</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Song Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for recommendation in recommendations %}
+                <tr>
+                    <td>{{ recommendation.song }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </body>
+<script src="../static/script/sidebar script.js"></script>
 </html>

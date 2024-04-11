@@ -1,6 +1,7 @@
 .main-container {
-  margin-left: 250px; /* Same as sidebar width */
+  margin-left: 250px;
   padding: 20px;
+  padding-left: 0; 
 }
 
 .main-container header {
@@ -10,17 +11,18 @@
 
 .recommendations {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 .recommendation {
-  flex: 1;
+  width: 30%;
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .recommendation img {
-  width: 200px;
-  height: 200px;
+  width: 100%;
   object-fit: cover;
   margin-bottom: 10px;
 }

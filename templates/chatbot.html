@@ -4,47 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../static/css/chatbot.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/sidebar.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <title>Chatbot Page</title>
     <link rel="icon" type="image/png" href="../static/musicrecco.png"/>
 </head>
 <body>
   <div class="sidebar">
-    <button onclick="window.location.href='/chatbot'" class="sidebar-button">Home</button>
-    <button onclick="window.location.href='/recommended'" class="sidebar-button">History</button>
-    <button onclick="window.location.href='/'" class="sidebar-button">Sign out</button>
-  </div>
-  <div class="chatbox-wrapper">
-    <!-- Add the loading spinner here -->
-    <div id="loadingSpinner" class="spinner"></div>
-    <div id="messageBox" class="message-box">
-      <div class="chat response">
-        <img src="../static/musicrecco_chatbotprofile.png">
-        <span>Hello there, I am MusicRecco! <br> Ask me all you want about music recommendations!</span>
-        <!-- <a href = '/recommended'>
-          <button class = 'hist-button'>Recommended History</button>
-        </a> -->
+    <header>
+        <img src="../static/musicrecco_no_name.png">
+        <h1>Musicrecco</h1>
+    </header>
+    <ul>
+        <li><a href="#" onclick="redirectTo('dashboard')"><i class="fas fa-home"></i>Home</a></li>
+        <li><a href="#" onclick="redirectTo('chatbot')"><i class="fas fa-comments"></i>Chatbot</a></li>
+        <li><a href="#" onclick="redirectTo('recommended')"><i class="fas fa-history"></i>History</a></li>        
+    </ul>
+    <div class="bottom-container">
+        <ul>
+            <li><a href="#" onclick="redirectTo('settings')"><i class="fas fa-cog"></i>Settings</a></li>
+            <li><a href="#" onclick="redirectTo('logout')"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+        </ul>
+    </div>
+  </div>    
+
+  <div class="main-container">
+    <div class="chatbox-wrapper">
+      <div id="loadingSpinner" class="spinner"></div>
+      <div id="messageBox" class="message-box">
+        <div class="chat response">
+          <img src="../static/musicrecco_chatbotprofile.png">
+          <span>Hello there, I am MusicRecco! <br> Ask me all you want about music recommendations!</span>
+        </div>
       </div>
-    </div>
 
-    <div class="suggestion-grid">
-      <div class="suggestion-box">What are the top trending songs right now?</div>
-      <div class="suggestion-box">Can you recommend some upbeat pop songs for a workout playlist?</div>
-      <div class="suggestion-box">Recommend me songs based on my favourite genres!</div>
-      <div class="suggestion-box">Surprise me!</div>
-    </div>
+      <div class="suggestion-grid">
+        <div class="suggestion-box">What are the top trending songs right now?</div>
+        <div class="suggestion-box">Can you recommend some upbeat pop songs for a workout playlist?</div>
+        <div class="suggestion-box">Recommend me songs based on my favourite genres!</div>
+        <div class="suggestion-box">Surprise me!</div>
+      </div>
 
-    <div class="messagebar">
-      <div class="bar-wrapper">
-        <input type="text" id="userMessage" placeholder="Enter your message...">
-        <button id="sendMessageBtn">
-          <span class="material-icons">send</span>
-        </button>
+      <div class="messagebar">
+        <div class="bar-wrapper">
+          <input type="text" id="userMessage" placeholder="Enter your message...">
+          <button id="sendMessageBtn">
+            <span class="material-icons">send</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="../static/chatbot script.js"></script>
+<script src="../static/script/chatbot script.js"></script>
+<script src="../static/script/sidebar script.js"></script>
 </html>
