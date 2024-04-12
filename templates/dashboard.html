@@ -30,16 +30,19 @@
     </div>     
     
     <div class="main-container">
-        <header>Welcome! Here are your reccommendations for the day!</header>
+        <header>Welcome! Here are your recommendations for the day!</header>
         <div class="recommendations">
             {% for recommendation in track_info_list %}
             <div class="recommendation">
-                <img src="{{ recommendation.image_url }}" alt="{{ recommendation.track_name }}">
-                <h2>{{ recommendation.track_name }}</h2>
+                <a href="{{ recommendation.track_id }}" target="_blank">
+                    <img src="{{ recommendation.image_url }}" alt="{{ recommendation.track_name }}">
+                    <h2>{{ recommendation.track_name }}</h2>
+                </a>
             </div>
             {% endfor %}
         </div>
     </div>
+        
 </body>
 <script src="../static/script/sidebar script.js"></script>
 </html>

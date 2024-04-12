@@ -39,12 +39,12 @@
             <tbody>
                 {% for recommendation in recommendations %}
                 <tr>
-                    <td>{{ recommendation.song }}</td>
+                    <td><a href="{{ recommendation.web }}">{{ recommendation.song }}</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-    </div>
+    </div>    
 </body>
 <script src="../static/script/sidebar script.js"></script>
 </html>

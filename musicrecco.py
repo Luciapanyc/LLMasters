@@ -222,23 +222,23 @@ def get_song_list():
     print("User's favorite genres:", genre)  # Debug statement
     
     # Query to get suggestion for genre
-    # recc_query = 'I like the genres ' + genre + ',recommend me 1 song from each of the genre I like.'
-    # with client.connect(chat_session_id) as session:
-    #     answer = session.query(
-    #         message=recc_query,
-    #         system_prompt='MUST return spotify_id at the end of each song.',
-    #         rag_config={"rag_type": "rag"},
-    #     ).content
+    recc_query = 'I like the genres ' + genre + ',recommend me 1 song from each of the genre I like.'
+    with client.connect(chat_session_id) as session:
+        answer = session.query(
+            message=recc_query,
+            system_prompt='Return spotify_id of the song only.',
+            rag_config={"rag_type": "rag"},
+        ).content
 
-    #     bot_response = answer
+        bot_response = answer
 
-    # print(bot_response) # Debug statement
+    print(bot_response) # Debug statement
 
-    # #Convert query to spotify id
-    # pattern = r'\w{22}'
+    #Convert query to spotify id
+    pattern = r'\w{22}'
 
-    # spotify_ids = re.findall(pattern, bot_response)
-    # print("Spotify IDs:", spotify_ids)  # Debug statement
+    spotify_ids = re.findall(pattern, bot_response)
+    print("Spotify IDs:", spotify_ids)  # Debug statement
 
     # In case, id fails, use backup of top ranked song 
     music_genres = {
@@ -258,15 +258,16 @@ def get_song_list():
 
     backup = genre.split(',')
     backup = [music_genres[genre] for genre in backup if genre in music_genres]
-    # spotify_ids.extend(backup)
+    spotify_ids.extend(backup)
 
     # Convert Id into names and album pics
     track_info_list = []
 
     for track_id in backup:
         track_name, image_url = get_spotify_track_info(track_id, access_token)
+        track_web = f'https://open.spotify.com/track/{track_id}'
         if track_name and image_url:
-            track_info_list.append({"track_name": track_name, "image_url": image_url})
+            track_info_list.append({"track_id": track_web, "track_name": track_name, "image_url": image_url})
             if len(track_info_list) >= 3:
                 break
 
@@ -299,7 +300,8 @@ def save_user_data_to_csv_recc(data):
 def convert_data(x):
     user_data = {
         'UserID': [],
-        'Song': []
+        'Song': [],
+        'Web': []
     }
     
     global user_id
@@ -307,8 +309,17 @@ def convert_data(x):
     for song_title in x:
         user_data['UserID'].append(user_id)
         user_data['Song'].append(song_title)
+        user_data['Web'].append(convert_to_youtube_search_query(song_title))
         
     return user_data
+
+def convert_to_youtube_search_query(x):
+    input_string = re.sub(r'[^a-zA-Z0-9]', '', x)
+    cleaned_string = ''.join(char for char in input_string if char.isalnum() or char.isspace())
+    query = '+'.join(cleaned_string.split())
+    youtube_search_query = f"https://www.youtube.com/results?search_query={query}"
+    return youtube_search_query
+
 
 
 @app.route('/chatbot', methods=['GET', 'POST'])
@@ -318,12 +329,22 @@ def chatbot():
     
     elif request.method == 'POST':
         try:
+            # From user
             user_message = request.form['message']
+
+            # Extra Query
+            user = pd.read_csv('/app/data/user.csv')
+            user_datas = user[user['UserID'] == user_id]
+            genre = user_datas.iloc[:, -3:].to_csv(index=False, header=False).strip()
+            print("User's favorite genres:", genre)  # Debug statement
+
+            # Final Query
+            recc_query = 'I like the genres ' + genre + '.' + user_message
 
             with client.connect(chat_session_id) as session:
                 answer = session.query(
-                    message=user_message,
-                    system_prompt='Recommend a max of 5 songs/music. Must provide Spotify ID.',
+                    message=recc_query,
+                    system_prompt='Reccommend a max of 5 songs. And return only song title in double quotation marks.',
                     rag_config={"rag_type": "rag"},
                 ).content
             
