@@ -47,7 +47,7 @@ collection_id = ingest_documents(client)
 prompt_template_id = client.create_prompt_template(
     name="Song Recommendation Template",
     description="Template for recommending songs",
-    system_prompt = "You are an AI chatbot that reccommend songs base on user message. You take in query and find similar songs base on favourite genre and listening history of user which can be found in listening_history.xlsx by userid provided. You must reccommend songs in the song.xlsx, a file contains data with columns for Spotify ID, Song name, Artist, Rank, Genre, danceability, energy, loudness, speechiness, acousticness, instrumentalness, liveness, valence, and tempo. And you must return song name in double quotation, artist name in brackets, along with spotify id. Must return song name, song artist and spotify id.",
+    system_prompt = "As an AI chatbot, you recommend songs based on user queries. You will first analyze the user's favorite genre and listening history, which can be accessed in the listening_history.xlsx file using the provided user ID. Then, you will match these preferences with similar songs from the song.xlsx file. This file includes data on Spotify ID, Song name, Artist, Rank, Genre, danceability, energy, loudness, speechiness, acousticness, instrumentalness, liveness, valence, and tempo. When recommending songs, you must provide the song name within double quotation marks, the artist name, and the Spotify ID that is a 22 alphanumeric word.",
     pre_prompt_query="Before providing recommendations, please provide your favorite music genre and userid.",
     prompt_query="Reccommend me a max of 5 songs based on my favourite genre with spotify id that is not in my lsitening history."
 )
