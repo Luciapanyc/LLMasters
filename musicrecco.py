@@ -47,6 +47,50 @@ name = " "
 collection_id = ingest_documents(client)
 chat_session_id = client.create_chat_session(collection_id)
 
+
+def ingest_documents1(client: H2OGPTE):
+    collection_id = None
+    name = 'homepage'
+
+    print("Recent collections:")
+    recent_collections = client.list_recent_collections(0, 1000)
+    for c in recent_collections:
+        if c.name == name and c.document_count:
+            collection_id = c.id
+            break
+
+    # Create Collection
+    if collection_id is None:
+        print(f"Creating collection: {name} ...")
+        collection_id = client.create_collection(
+            name=name,
+            description='homepage',
+        )
+        print(f"New collection: {collection_id} ...")
+
+        # Upload file into collection
+        song_data = client.upload('song.xlsx', open('/app/data/song.xlsx', 'rb'))
+        history_data = client.upload('song.xlsx', open('/app/data/listening_history.xlsx', 'rb'))
+        client.ingest_uploads(collection_id, [song_data, history_data])
+
+        print(f"DONE: {collection_id}")
+    return collection_id
+
+# Global Variables
+user_id1 = " "
+name1 = " "
+collection_id1 = ingest_documents(client)
+chat_session_id1 = client.create_chat_session(collection_id1)
+
+""" with client.connect(chat_session_id1) as session:
+        answer = session.query(
+            message=recc_query,
+            system_prompt='Only return the name of the song recommended in quotation marks',
+            rag_config={"rag_type": "rag"},
+        ).content
+
+        bot_response = answer """
+
 ###########################################################################################################################
 
 ### 1. Login Page
@@ -226,7 +270,7 @@ def get_song_list():
     with client.connect(chat_session_id) as session:
         answer = session.query(
             message=recc_query,
-            system_prompt='You MUST ONLY return spotify_id of the song. Spotify id is a 22-character alpahanumeric word.',
+            system_prompt='MUST return spotify_id at the end of each song.',
             rag_config={"rag_type": "rag"},
         ).content
 
