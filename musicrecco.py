@@ -35,61 +35,30 @@ def ingest_documents(client: H2OGPTE):
 
         # Upload file into collection
         song_data = client.upload('song.xlsx', open('/app/data/song.xlsx', 'rb'))
-        history_data = client.upload('song.xlsx', open('/app/data/listening_history.xlsx', 'rb'))
+        history_data = client.upload('listening_history.xlsx', open('/app/data/listening_history.xlsx', 'rb'))
         client.ingest_uploads(collection_id, [song_data, history_data])
 
         print(f"DONE: {collection_id}")
     return collection_id
+
+
+collection_id = ingest_documents(client)
+
+prompt_template_id = client.create_prompt_template(
+    name="Song Recommendation Template",
+    description="Template for recommending songs",
+    system_prompt = "You are an AI chatbot that reccommend songs base on user message. You take in query and find similar songs base on favourite genre and listening history of user which can be found in listening_history.xlsx by userid provided. You must reccommend songs in the song.xlsx, a file contains data with columns for Spotify ID, Song name, Artist, Rank, Genre, danceability, energy, loudness, speechiness, acousticness, instrumentalness, liveness, valence, and tempo. And you must return song name in double quotation, artist name in brackets, along with spotify id. Must return song name, song artist and spotify id.",
+    pre_prompt_query="Before providing recommendations, please provide your favorite music genre and userid.",
+    prompt_query="Reccommend me a max of 5 songs based on my favourite genre with spotify id that is not in my lsitening history."
+)
+
+client.set_collection_prompt_template(collection_id, prompt_template_id)
+
+chat_session_id = client.create_chat_session(collection_id)
 
 # Global Variables
 user_id = " "
 name = " "
-collection_id = ingest_documents(client)
-chat_session_id = client.create_chat_session(collection_id)
-
-
-def ingest_documents1(client: H2OGPTE):
-    collection_id = None
-    name = 'homepage'
-
-    print("Recent collections:")
-    recent_collections = client.list_recent_collections(0, 1000)
-    for c in recent_collections:
-        if c.name == name and c.document_count:
-            collection_id = c.id
-            break
-
-    # Create Collection
-    if collection_id is None:
-        print(f"Creating collection: {name} ...")
-        collection_id = client.create_collection(
-            name=name,
-            description='homepage',
-        )
-        print(f"New collection: {collection_id} ...")
-
-        # Upload file into collection
-        song_data = client.upload('song.xlsx', open('/app/data/song.xlsx', 'rb'))
-        history_data = client.upload('song.xlsx', open('/app/data/listening_history.xlsx', 'rb'))
-        client.ingest_uploads(collection_id, [song_data, history_data])
-
-        print(f"DONE: {collection_id}")
-    return collection_id
-
-# Global Variables
-user_id1 = " "
-name1 = " "
-collection_id1 = ingest_documents(client)
-chat_session_id1 = client.create_chat_session(collection_id1)
-
-""" with client.connect(chat_session_id1) as session:
-        answer = session.query(
-            message=recc_query,
-            system_prompt='Only return the name of the song recommended in quotation marks',
-            rag_config={"rag_type": "rag"},
-        ).content
-
-        bot_response = answer """
 
 ###########################################################################################################################
 
@@ -266,11 +235,10 @@ def get_song_list():
     print("User's favorite genres:", genre)  # Debug statement
     
     # Query to get suggestion for genre
-    recc_query = 'I like the genres ' + genre + ',recommend me 1 song from each of the genre I like.'
+    recc_query = 'I am {user_id} and I like the genres {genre}, recommend me 1 song from each of the genre I like.'
     with client.connect(chat_session_id) as session:
         answer = session.query(
             message=recc_query,
-            system_prompt='MUST return spotify_id at the end of each song.',
             rag_config={"rag_type": "rag"},
         ).content
 
@@ -307,14 +275,13 @@ def get_song_list():
     # Convert Id into names and album pics
     track_info_list = []
 
-    for track_id in backup:
+    for track_id in spotify_ids:
         track_name, image_url = get_spotify_track_info(track_id, access_token)
         track_web = f'https://open.spotify.com/track/{track_id}'
         if track_name and image_url:
             track_info_list.append({"track_id": track_web, "track_name": track_name, "image_url": image_url})
             if len(track_info_list) >= 3:
                 break
-
     return track_info_list
 
 
@@ -384,12 +351,11 @@ def chatbot():
             print("User's favorite genres:", genre)  # Debug statement
 
             # Final Query
-            recc_query = 'I like the genres ' + genre + '.' + user_message
+            recc_query = 'I am {user_id} and I like the genres {genre}.' + user_message
 
             with client.connect(chat_session_id) as session:
                 answer = session.query(
                     message=recc_query,
-                    system_prompt='Reccommend a max of 5 songs. You MUST return ONLY "song title" in double quotation marks.',
                     rag_config={"rag_type": "rag"},
                 ).content
             
