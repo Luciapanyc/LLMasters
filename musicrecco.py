@@ -226,7 +226,7 @@ def get_song_list():
     with client.connect(chat_session_id) as session:
         answer = session.query(
             message=recc_query,
-            system_prompt='Return spotify_id of the song only.',
+            system_prompt='You MUST ONLY return spotify_id of the song. Spotify id is a 22-character alpahanumeric word.',
             rag_config={"rag_type": "rag"},
         ).content
 
@@ -313,8 +313,9 @@ def convert_data(x):
         
     return user_data
 
+# Youtube
 def convert_to_youtube_search_query(x):
-    input_string = re.sub(r'[^a-zA-Z0-9]', '', x)
+    input_string = re.sub(r'[^a-zA-Z0-9\s]', '', x)
     cleaned_string = ''.join(char for char in input_string if char.isalnum() or char.isspace())
     query = '+'.join(cleaned_string.split())
     youtube_search_query = f"https://www.youtube.com/results?search_query={query}"
@@ -344,7 +345,7 @@ def chatbot():
             with client.connect(chat_session_id) as session:
                 answer = session.query(
                     message=recc_query,
-                    system_prompt='Reccommend a max of 5 songs. And return only song title in double quotation marks.',
+                    system_prompt='Reccommend a max of 5 songs. You MUST return ONLY "song title" in double quotation marks.',
                     rag_config={"rag_type": "rag"},
                 ).content
             
