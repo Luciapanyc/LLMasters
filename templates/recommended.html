@@ -4,6 +4,7 @@
     <title>Recommended History</title>
     <link rel="stylesheet" type="text/css" href="../static/css/reccommendation.css">
     <link rel="stylesheet" type="text/css" href="../static/css/sidebar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <title>History Page</title>
     <link rel="icon" type="image/png" href="../static/musicrecco.png"/>
@@ -34,12 +35,20 @@
             <thead>
                 <tr>
                     <th>Song Name</th>
+                    <th>Artist</th>
+                    <th>Genre</th>
+                    <th>Date</th>
+                    <th>Time</th>
                 </tr>
             </thead>
             <tbody>
                 {% for recommendation in recommendations %}
                 <tr>
                     <td><a href="{{ recommendation.Websites }}" target="_blank">{{ recommendation.song }}</a></td>
+                    <td>{{ recommendation.Artist }}</td>
+                    <td>{{ recommendation.Genre }}</td>
+                    <td>{{ recommendation.Date }}</td>
+                    <td>{{ recommendation.Time }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
