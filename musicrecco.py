@@ -4,7 +4,6 @@ import numpy as np
 import pandas as pd
 import re
 import requests
-import openpyxl
 import datetime
 
 app = Flask(__name__)

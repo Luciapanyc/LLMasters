@@ -35,8 +35,6 @@
             <thead>
                 <tr>
                     <th>Song Name</th>
-                    <th>Artist</th>
-                    <th>Genre</th>
                     <th>Date</th>
                     <th>Time</th>
                 </tr>
@@ -45,8 +43,6 @@
                 {% for recommendation in recommendations %}
                 <tr>
                     <td><a href="{{ recommendation.Websites }}" target="_blank">{{ recommendation.song }}</a></td>
-                    <td>{{ recommendation.Artist }}</td>
-                    <td>{{ recommendation.Genre }}</td>
                     <td>{{ recommendation.Date }}</td>
                     <td>{{ recommendation.Time }}</td>
                 </tr>
