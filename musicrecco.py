@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 import re
 import requests
+import openpyxl
+import datetime
 
 app = Flask(__name__)
 
@@ -312,15 +314,33 @@ def convert_data(x):
     user_data = {
         'UserID': [],
         'Song': [],
-        'Web': []
+        'Web': [],
+        'Genre': [],
+        'Artist': [],
+        'Date' : [],
+        'Time' : []
     }
     
     global user_id
 
+    current_datetime = datetime.datetime.now()
+
+    date = current_datetime.strftime("%A, %d %B %Y")
+    time = current_datetime.strftime("%H:%M:%S")
+
+    song_information = pd.read_excel('/app/data/song.xlsx', engine='openpyxl')
+
     for song_title in x:
+        genre = song_information.loc[song_information['Song']==song_title,'Genre'].reset_index(drop=True)[0]
+        artist = song_information.loc[song_information['Song']==song_title,'Artist'].reset_index(drop=True)[0]
+
         user_data['UserID'].append(user_id)
         user_data['Song'].append(song_title)
         user_data['Web'].append(convert_to_youtube_search_query(song_title))
+        user_data['Genre'].append(genre)
+        user_data['Artist'].append(artist)
+        user_data['Date'].append(date)
+        user_data['Time'].append(time)
         
     return user_data
 
@@ -385,7 +405,9 @@ def recommender():
         # Read the CSV file containing the recommended song
         df = pd.read_csv('/app/data/recommendation_history.csv')
         df = df[df['UserID'] == user_id]
-        
+        df = df.sort_values(by=['Date', 'Time'], ascending=False)
+        df['Time'] = pd.to_datetime(df['Time'], format='%H:%M:%S').dt.strftime('%I:%M:%S %p')
+
         # Convert the DataFrame to a list of dictionaries
         recommendation_data = df.to_dict('records')
         
