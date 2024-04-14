@@ -315,8 +315,6 @@ def convert_data(x):
         'UserID': [],
         'Song': [],
         'Web': [],
-        'Genre': [],
-        'Artist': [],
         'Date' : [],
         'Time' : []
     }
@@ -328,17 +326,10 @@ def convert_data(x):
     date = current_datetime.strftime("%A, %d %B %Y")
     time = current_datetime.strftime("%H:%M:%S")
 
-    song_information = pd.read_excel('/app/data/song.xlsx', engine='openpyxl')
-
     for song_title in x:
-        genre = song_information.loc[song_information['Song']==song_title,'Genre'].reset_index(drop=True)[0]
-        artist = song_information.loc[song_information['Song']==song_title,'Artist'].reset_index(drop=True)[0]
-
         user_data['UserID'].append(user_id)
         user_data['Song'].append(song_title)
         user_data['Web'].append(convert_to_youtube_search_query(song_title))
-        user_data['Genre'].append(genre)
-        user_data['Artist'].append(artist)
         user_data['Date'].append(date)
         user_data['Time'].append(time)
         
