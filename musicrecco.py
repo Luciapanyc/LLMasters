@@ -235,7 +235,7 @@ def get_song_list():
     print("User's favorite genres:", genre)  # Debug statement
     
     # Query to get suggestion for genre
-    recc_query = 'I am {user_id} and I like the genres {genre}, recommend me 1 song from each of the genre I like.'
+    recc_query = 'My user_id is {user_id} and I like the genres {genre}, recommend me 1 song from each of the genre I like.'
     with client.connect(chat_session_id) as session:
         answer = session.query(
             message=recc_query,
@@ -351,7 +351,7 @@ def chatbot():
             print("User's favorite genres:", genre)  # Debug statement
 
             # Final Query
-            recc_query = 'I am {user_id} and I like the genres {genre}.' + user_message
+            recc_query = 'My user id is {user_id} and I like the genres {genre}.' + user_message
 
             with client.connect(chat_session_id) as session:
                 answer = session.query(
