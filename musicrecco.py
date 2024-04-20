@@ -14,6 +14,7 @@ client = H2OGPTE(
     api_key='sk-yG5q6JxtLgMS1Twv0mwZKbIVmJw5pNKGL6uU57p5IfYYJUq7',
 )
 
+# Creating Collection and Ingesting Documents
 def ingest_documents(client: H2OGPTE):
     collection_id = None
     name = 'Musicrecco'
@@ -45,21 +46,25 @@ def ingest_documents(client: H2OGPTE):
 
 collection_id = ingest_documents(client)
 
+# Prompt Training
+pre_prompt = "song.pdf: 300 rows of song data including Spotify ID, Song, Artist, Rank, Genre, danceability, energy, loudness, speechiness, acousticness, liveness, valence, tempo. listening_history.pdf: User ID and Spotify ID of songs they've listened to. Task: Understand the data and recommend songs based on genre, followed by features and rank, tailored to users' favorite genre."
+prompt = "As an AI chatbot, you recommend songs based on user queries. Songs reccommended MUST only be from song.pdf.  First, I analyze the user's favorite genre which is provided and listening history, accessed in listening_history.pdf using the provided user ID. When recommending songs, I provide the song name within double quotations, the artist name, and the Spotify ID a 22 alphanumeric word, formatted as \"Song name\" by Artist. Spotify ID: [spotify id]"
+front_prompt = "Reccommend me a max of 5 songs based on my favourite genre with spotify id that is not in my lsitening history."
+
 prompt_template_id = client.create_prompt_template(
     name="Song Recommendation Template",
     description="Template for recommending songs",
-    system_prompt = "As an AI chatbot, you recommend songs based on user queries. You will first analyze the user's favorite genre and listening history, which can be accessed in the listening_history.xlsx file using the provided user ID. Then, you will match these preferences with similar songs from the song.xlsx file. This file includes data on Spotify ID, Song name, Artist, Rank, Genre, danceability, energy, loudness, speechiness, acousticness, instrumentalness, liveness, valence, and tempo. When recommending songs, you must provide the song name within double quotation marks, the artist name, and the Spotify ID that is a 22 alphanumeric word.",
-    pre_prompt_query="Before providing recommendations, please provide your favorite music genre and userid.",
-    prompt_query="Reccommend me a max of 5 songs based on my favourite genre with spotify id that is not in my lsitening history."
+    system_prompt = prompt,
+    pre_prompt_query= pre_prompt,
+    prompt_query= front_prompt
 )
 
 client.set_collection_prompt_template(collection_id, prompt_template_id)
 
-chat_session_id = client.create_chat_session(collection_id)
-
 # Global Variables
 user_id = " "
 name = " "
+chat_Session_id = " "
 
 ###########################################################################################################################
 
@@ -108,8 +113,9 @@ def login():
 
             authenticated = authenticate(username, password)
 
-            global user_id
+            global user_id, chat_session_id
             user_id = username
+            chat_session_id = client.create_chat_session(collection_id)
 
             if authenticated:
                 return redirect(url_for('dashboard')), 302
@@ -226,8 +232,8 @@ def get_spotify_track_info(track_id, access_token):
 
 # Get list of song and cover
 def get_song_list():
-    global user_id
-    print(user_id) # Debug statement
+    global user_id, chat_session_id
+    print(user_id, chat_session_id) # Debug statement
 
     # Read to get User's favourite genre
     user = pd.read_csv('/app/data/user.csv')
@@ -236,7 +242,8 @@ def get_song_list():
     print("User's favorite genres:", genre)  # Debug statement
     
     # Query to get suggestion for genre
-    recc_query = 'My user_id is {user_id} and I like the genres {genre}, recommend me 1 song from each of the genre I like.'
+    recc_query = 'My user_id is' + user_id + 'and I like the genres' + genre + ', recommend me 1 song from each of the genre I like.'
+    print(recc_query) # Debug Statement
     with client.connect(chat_session_id) as session:
         answer = session.query(
             message=recc_query,
@@ -351,6 +358,8 @@ def chatbot():
     
     elif request.method == 'POST':
         try:
+            global user_id, chat_session_id
+
             # From user
             user_message = request.form['message']
 
@@ -361,15 +370,17 @@ def chatbot():
             print("User's favorite genres:", genre)  # Debug statement
 
             # Final Query
-            recc_query = 'My user id is {user_id} and I like the genres {genre}.' + user_message
+            recc_query = 'My user_id is' + user_id + 'and I like the genres' + genre + '.' + user_message
+            print(recc_query) # Debug Statement
 
             with client.connect(chat_session_id) as session:
                 answer = session.query(
                     message=recc_query,
                     rag_config={"rag_type": "rag"},
                 ).content
-            
+
                 bot_response = answer
+                print(bot_response)  #Debug statement
 
                 # Saving responses
                 pattern = r'"([^"]+)"'
