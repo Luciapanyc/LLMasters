@@ -30,4 +30,4 @@ MusicRecoo offers three interactive pages:
 
 2. **Chatbot Page**: Utilizes the RAG LLM (Large Language Model) to recommend music based on user queries.
 
-3. **History Page**: Stores all music recommendations made by the chatbot for easy reference by the user.
+3. **History Page**: Stores all music recommendations made by the chatbot for easy reference by the user. Song names are presented as clickable links, allowing users to easily access the music on Youtube.
